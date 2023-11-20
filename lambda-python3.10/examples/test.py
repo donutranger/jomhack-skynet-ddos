@@ -12,7 +12,7 @@ assistant = client.beta.assistants.create(
 )
 
 file = client.files.create(
-  file=open("YumeSdnBhd-SampleBusinessPlan.pdf", "rb"),
+  file=open("abnb-20211231.pdf", "rb"),
   purpose='assistants'
 )
 
