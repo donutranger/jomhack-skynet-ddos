@@ -23,17 +23,64 @@ client.beta.assistants.files.create(
 
 thread = client.beta.threads.create()
 
-message = client.beta.threads.messages.create(
-    thread_id=thread.id,
-    role="user",
-    file_ids=[file.id],
-    content="I want to evaluate the risk of the company. based on the business plan attached."
-)
+# message = client.beta.threads.messages.create(
+#     thread_id=thread.id,
+#     role="user",
+#     file_ids=[file.id],
+#     content="""Extract company information from the attached file to valid json object that has following fields:
+#     { 
+#         "name" : "Company Name",
+#         "address" : "Company Address",
+#         "phone" : "Company Phone",
+#         "email" : "Company Email",
+#         "website" : "Company Website",
+#         "industry" : "Company Industry",
+#         "incorporation_date" : "Company Incorporation Date",
+#         "origin_country" : "Company Origin Country"
+#     }
+#     """
+# )
+
+# client.beta.threads.messages.create(
+#     thread_id=thread.id,
+#     role="user",
+#     file_ids=[file.id],
+#     content="""Extract company financial information from the attached file  to valid json object that has following fields:
+
+#     {
+#         "revenue" : "Company Revenue",
+#         "profit" : "Company Profit",
+#         "assets" : "Company Assets",
+#         "liabilities" : "Company Liabilities",
+#         "equity" : "Company Equity",
+#         "debt" : "Company Debt",
+#         "cash" : "Company Cash",
+#         "debt_to_equity_ratio" : "Company Debt to Equity Ratio",
+#         "current_ratio" : "Company Current Ratio",
+#         "quick_ratio" : "Company Quick Ratio"
+#     }
+#     """
+# )
+
+# client.beta.threads.messages.create(
+#     thread_id=thread.id,
+#     role="user",
+#     file_ids=[file.id],
+#     content="""You MUST provide risk evaluation for the company from 1 to 100. 1 is the highest risk and 100 is the lowest risk. based on attached file.
+#     Your response MUST be in json format that has following fields:
+    
+#     {
+#       "risk_score": "Company Risk Score (0-100)",
+#       "risk_level": "Company Risk Level(Low, Medium, High)",
+#       "risk_reason": "Reason for the risk level"    
+#     }
+#     """
+# )
 
 run = client.beta.threads.runs.create(
   thread_id=thread.id,
   assistant_id=assistant.id,
-  instructions="Provide risk evaluation for the company from 1 to 100. 1 is the highest risk and 100 is the lowest risk.",
+  instructions="",
 )
 
 print("checking assistant status. ")
