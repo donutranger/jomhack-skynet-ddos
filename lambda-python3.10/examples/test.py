@@ -12,7 +12,7 @@ assistant = client.beta.assistants.create(
 )
 
 file = client.files.create(
-  file=open("mas-bp-2011.pdf", "rb"),
+  file=open("YumeSdnBhd-SampleBusinessPlan.pdf", "rb"),
   purpose='assistants'
 )
 
@@ -27,7 +27,7 @@ message = client.beta.threads.messages.create(
     thread_id=thread.id,
     role="user",
     file_ids=[file.id],
-    content="Provide risk evaluation for the company from 1 to 100. 1 is the highest risk and 100 is the lowest risk."
+    content="I want to evaluate the risk of the company. based on the business plan attached."
 )
 
 run = client.beta.threads.runs.create(
