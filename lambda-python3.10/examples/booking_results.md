@@ -32,13 +32,49 @@ The MD&A section typically includes insights from management regarding the compa
 
 Other Sections (e.g., Risk Factors, Legal Proceedings, etc.):
 
-Compliance Rating
-Market Risk Rating
-Revenue Growth Rating
-ESG (Environmental, Social, Governance) Rating
+- Compliance Rating
+- Market Risk Rating
+- Revenue Growth Rating
+- ESG (Environmental, Social, Governance) Rating
 
 Various other sections of the 10-K, such as risk factors, legal proceedings, and sustainability disclosures, can provide information for assessing regulatory compliance, market risk, operational performance, and social responsibility.
 Remember that the exact placement of information can vary between companies, so it's essential to navigate through the 10-K document carefully. Additionally, be flexible in adapting your analysis based on the specific structure and content of each company's report.
+
+# Credit score calculation
+
+Assigning weights to the different ratings is a subjective process and can vary based on your assessment of the importance of each factor in determining the creditworthiness of a company. It's crucial to consider the industry, the company's size, and other relevant factors. Below is a suggested set of weights for the ratings you mentioned:
+
+- Financial Health:
+  - Liquidity Rating: 10%
+  - Solvency Rating: 10%
+- Profitability:
+  - Net Profit Margin: 15%
+  - Return on Equity (ROE): 15%
+- Efficiency:
+  - Asset Turnover: 10%
+- Risk Assessment:
+  - Financial Risk Rating: 10%
+  - Market Risk Rating: 10%
+- Operational Performance:
+  - Revenue Growth Rating: 10%
+  - Operating Margin: 10%
+- Management Quality:
+  - Management Competence Rating: 10%
+  - Governance and Ethics Rating: 10%
+- Industry and Market Analysis:
+  - Market Position Rating: 5%
+  - Competitive Analysis Rating: 5%
+  - Industry and Market Analysis: 5%
+- Regulatory Compliance:
+  - Compliance Rating: 5%
+- Future Outlook:
+  - Forward-Looking Statements Rating: 5%
+- Sustainability and Social Responsibility:
+  - ESG (Environmental, Social, Governance) Rating: 5%
+
+These weights add up to 100%, and you can adjust them based on your priorities and the specific characteristics of the industry or company you are analyzing. Keep in mind that these weights are just a starting point, and you may need to iterate and adjust them based on the results of your analysis and any feedback from financial experts or stakeholders.
+
+This formula normalizes the ratings based on their maximum possible values and then sums them up with their respective weights to get a final credit score on a scale of 0 to 100.
 
 # Part 1
 
