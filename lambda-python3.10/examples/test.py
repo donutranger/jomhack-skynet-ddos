@@ -12,7 +12,7 @@ assistant = client.beta.assistants.create(
 )
 
 file = client.files.create(
-  file=open("NASDAQ_BKNG_2019_Part4.pdf", "rb"),
+  file=open("NASDAQ_BKNG_2019_Part2.pdf", "rb"),
   purpose='assistants'
 )
 
@@ -41,25 +41,25 @@ thread = client.beta.threads.create()
 # )
 
 # Part 2
-# client.beta.threads.messages.create(
-#     thread_id=thread.id,
-#     role="user",
-#     file_ids=[file.id],
-#     content="""
-# You are an AI trained to analyze 10-K Part 2 reports and provide ratings for various aspects of a company. 
-# You have just finished analyzing the attached 10-K report Part 2. 
-# Please provide ratings for the following aspects from 1 to 100, where 1 is the lowest rating and 100 is the highest rating.
-# Your response should be in JSON format and include the following fields:
+client.beta.threads.messages.create(
+    thread_id=thread.id,
+    role="user",
+    file_ids=[file.id],
+    content="""
+You are an AI trained to analyze 10-K Part 2 reports and provide ratings for various aspects of a company. 
+You have just finished analyzing the attached 10-K report Part 2. 
+Please provide ratings for the following aspects from 1 to 100, where 1 is the lowest rating and 100 is the highest rating.
+Your response should be in JSON format and include the following fields:
 
-# - "liquidity_rating": The company's liquidity rating
-# - "solvency_rating": The company's solvency rating
-# - "net_profit_margin": The company's net profit margin
-# - "return_on_equity": The company's return on equity
-# - "asset_turnover": The company's asset turnover
-# - "financial_risk_rating": The company's financial risk rating
-# - "operating_margin": The company's operating margin
-#     """
-# )
+- "liquidity_rating": The company's liquidity rating
+- "solvency_rating": The company's solvency rating
+- "net_profit_margin": The company's net profit margin
+- "return_on_equity": The company's return on equity
+- "asset_turnover": The company's asset turnover
+- "financial_risk_rating": The company's financial risk rating
+- "operating_margin": The company's operating margin
+    """
+)
 
 # client.beta.threads.messages.create(
 #     thread_id=thread.id,
