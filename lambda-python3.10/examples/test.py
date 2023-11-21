@@ -6,13 +6,13 @@ client = openai.OpenAI()
 
 assistant = client.beta.assistants.create(
     name="Risk Engine",
-    instructions="You are risk evaluation model for banks. You are given information about company and you need to evaluate the risk of the company.",
+    instructions="You are an AI trained to analyze 10-K reports",
     tools=[{"type": "retrieval"}],
     model="gpt-4-1106-preview",
 )
 
 file = client.files.create(
-  file=open("abnb-20211231.pdf", "rb"),
+  file=open("NASDAQ_BKNG_2019_Part4.pdf", "rb"),
   purpose='assistants'
 )
 
@@ -23,21 +23,41 @@ client.beta.assistants.files.create(
 
 thread = client.beta.threads.create()
 
+# Part 1
 # message = client.beta.threads.messages.create(
 #     thread_id=thread.id,
 #     role="user",
 #     file_ids=[file.id],
-#     content="""Extract company information from the attached file to valid json object that has following fields:
-#     { 
-#         "name" : "Company Name",
-#         "address" : "Company Address",
-#         "phone" : "Company Phone",
-#         "email" : "Company Email",
-#         "website" : "Company Website",
-#         "industry" : "Company Industry",
-#         "incorporation_date" : "Company Incorporation Date",
-#         "origin_country" : "Company Origin Country"
-#     }
+#     content="""
+# You are an AI trained to analyze 10-K reports and provide ratings for various aspects of a company. 
+# You have just finished analyzing the attached 10-K report. 
+# Please provide ratings for the following aspects from 1 to 100, where 1 is the lowest rating and 100 is the highest rating.
+# Your response should be in JSON format and include the following fields:
+
+# - "market_position_rating": The company's market position rating
+# - "competitive_analysis_rating": The company's competitive analysis rating
+# - "industry_market_analysis": The company's industry and market analysis rating
+#     """
+# )
+
+# Part 2
+# client.beta.threads.messages.create(
+#     thread_id=thread.id,
+#     role="user",
+#     file_ids=[file.id],
+#     content="""
+# You are an AI trained to analyze 10-K Part 2 reports and provide ratings for various aspects of a company. 
+# You have just finished analyzing the attached 10-K report Part 2. 
+# Please provide ratings for the following aspects from 1 to 100, where 1 is the lowest rating and 100 is the highest rating.
+# Your response should be in JSON format and include the following fields:
+
+# - "liquidity_rating": The company's liquidity rating
+# - "solvency_rating": The company's solvency rating
+# - "net_profit_margin": The company's net profit margin
+# - "return_on_equity": The company's return on equity
+# - "asset_turnover": The company's asset turnover
+# - "financial_risk_rating": The company's financial risk rating
+# - "operating_margin": The company's operating margin
 #     """
 # )
 
@@ -45,35 +65,16 @@ thread = client.beta.threads.create()
 #     thread_id=thread.id,
 #     role="user",
 #     file_ids=[file.id],
-#     content="""Extract company financial information from the attached file  to valid json object that has following fields:
+#     content="""
+# You are an AI trained to analyze 10-K Part 4 reports and provide ratings for various aspects of a company. 
+# You have just finished analyzing the attached 10-K report Part 4. 
+# Please provide ratings for the following aspects from 1 to 100, where 1 is the lowest rating and 100 is the highest rating.
+# Your response should be in JSON format and include the following fields:
 
-#     {
-#         "revenue" : "Company Revenue",
-#         "profit" : "Company Profit",
-#         "assets" : "Company Assets",
-#         "liabilities" : "Company Liabilities",
-#         "equity" : "Company Equity",
-#         "debt" : "Company Debt",
-#         "cash" : "Company Cash",
-#         "debt_to_equity_ratio" : "Company Debt to Equity Ratio",
-#         "current_ratio" : "Company Current Ratio",
-#         "quick_ratio" : "Company Quick Ratio"
-#     }
-#     """
-# )
-
-# client.beta.threads.messages.create(
-#     thread_id=thread.id,
-#     role="user",
-#     file_ids=[file.id],
-#     content="""You MUST provide risk evaluation for the company from 1 to 100. 1 is the highest risk and 100 is the lowest risk. based on attached file.
-#     Your response MUST be in json format that has following fields:
-    
-#     {
-#       "risk_score": "Company Risk Score (0-100)",
-#       "risk_level": "Company Risk Level(Low, Medium, High)",
-#       "risk_reason": "Reason for the risk level"    
-#     }
+# - "compliance_rating": The company's compliance rating
+# - "market_risk_rating": The company's market risk rating
+# - "revenue_growth_rating": The company's revenue growth rating
+# - "esg_rating": The company's ESG (Environmental, Social, Governance) rating
 #     """
 # )
 
