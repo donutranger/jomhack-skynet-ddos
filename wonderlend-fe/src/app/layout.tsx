@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "@next/font/local";
 import "./globals.css";
+import Navbar from "~/components/navbar";
 
 const satoshi = localFont({
   src: [
@@ -18,7 +19,7 @@ const satoshi = localFont({
 
 export const metadata: Metadata = {
   title: "Wonderlend",
-  description: "AI Serveice rto help startups get funds",
+  description: "AI Service to help startups get funds",
 };
 
 export default function RootLayout({
@@ -28,7 +29,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${satoshi.variable} font-sans`}>
-      <body>{children}</body>
+      <body>
+        <Navbar />
+        {children}
+      </body>
     </html>
   );
 }
