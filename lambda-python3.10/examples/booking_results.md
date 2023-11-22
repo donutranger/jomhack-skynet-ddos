@@ -83,7 +83,7 @@ Based on the information extracted from the 10-K report, here are the ratings an
 ```json
 {
     "market_position_rating": 85,
-    "market_position_rating_reason": "The company holds a strong market position as evidenced by Booking.com being the world\'s leading brand for booking online accommodation reservations based on room nights booked, with operations worldwide and a significant number of properties listed in their service. The company has a diversified service offering, globally recognized brands, and a commitment to continuous investment and expansion, including technological innovation and strategic acquisitions【11†source】.",
+    "market_position_rating_reason": "The company holds a strong market position as evidenced by Booking.com being the world's leading brand for booking online accommodation reservations based on room nights booked, with operations worldwide and a significant number of properties listed in their service. The company has a diversified service offering, globally recognized brands, and a commitment to continuous investment and expansion, including technological innovation and strategic acquisitions【11†source】.",
     "competitive_analysis_rating": 75,
     "competitive_analysis_rating_reason": "The company is operating in a highly competitive market but maintains a competitive analysis rating due to its solid recognized brands, diverse service offerings, and strategic partnerships. Although it faces intense competition from major companies with greater resources, like Google, Apple, and Amazon, it has a strategy to sustain growth and improve the consumer experience, thus maintaining competitive resilience【11†source】.",
     "industry_market_analysis": 80,
@@ -94,7 +94,7 @@ Based on the information extracted from the 10-K report, here are the ratings an
 These ratings are subjective assessments based on the data provided in the 10-K report and should be seen as a starting point for deeper due diligence and analysis rather than definitive scores.
 
 
-# Part 2 Doesn't work yet 
+# Part 2 
 
 Based on the attached 10-K Part 2 report, following are the ratings and the rationales for each aspect:
 
@@ -105,7 +105,7 @@ Based on the attached 10-K Part 2 report, following are the ratings and the rati
   "solvency_rating": 70,
   "solvency_rating_reason": "With an outstanding debt of approximately $8.7 billion, and a fair value of debt estimated at $9.8 billion, the company has substantial long-term obligations. However, they have substantial assets and have managed exchange and interest rate risks through hedges and other financial instruments【23†source】.",
   "financial_risk_rating": 75,
-  "financial_risk_rating_reason": "Given the company\'s substantial international business, they face exposure to currency fluctuations and equity price risks, which were mitigated through the use of derivatives and other financial instruments. Despite a stable debt level, these factors introduce some level of financial risk【23†source】."
+  "financial_risk_rating_reason": "Given the company's substantial international business, they face exposure to currency fluctuations and equity price risks, which were mitigated through the use of derivatives and other financial instruments. Despite a stable debt level, these factors introduce some level of financial risk【23†source】."
 }
 ```
 
@@ -113,7 +113,7 @@ These ratings are derived from the information contained in the 10-K Part 2 repo
 
 # Part 4
 
-The content of the 10-K Part 4 report provided is partially visible due to limitations in the tool\'s browsing display, and several areas critical for rating evaluation are not displayed or are cut off in the text. Based on the partial content available related to compliance, market risks, revenue growth, and environmental, social, and governance (ESG) factors, here is a tentative analysis that could inform the ratings:
+The content of the 10-K Part 4 report provided is partially visible due to limitations in the tool's browsing display, and several areas critical for rating evaluation are not displayed or are cut off in the text. Based on the partial content available related to compliance, market risks, revenue growth, and environmental, social, and governance (ESG) factors, here is a tentative analysis that could inform the ratings:
 
 ```json
 {
