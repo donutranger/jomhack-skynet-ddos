@@ -12,7 +12,7 @@ assistant = client.beta.assistants.create(
 )
 
 file = client.files.create(
-  file=open("NASDAQ_BKNG_2019_Part2.pdf", "rb"),
+  file=open("NASDAQ_BKNG_2019_Part4.pdf", "rb"),
   purpose='assistants'
 )
 
@@ -35,44 +35,54 @@ thread = client.beta.threads.create()
 # Your response should be in JSON format and include the following fields:
 
 # - "market_position_rating": The company's market position rating
+# - "market_position_rating_reason": The reason for the company's market position rating
 # - "competitive_analysis_rating": The company's competitive analysis rating
+# - "competitive_analysis_rating_reason": The reason for the company's competitive analysis rating
 # - "industry_market_analysis": The company's industry and market analysis rating
+# - "industry_market_analysis_reason": The reason for the company's industry and market analysis rating
 #     """
 # )
 
 # Part 2
-client.beta.threads.messages.create(
-    thread_id=thread.id,
-    role="user",
-    file_ids=[file.id],
-    content="""
-You are an AI trained to analyze 10-K Part 2 reports and provide ratings for various aspects of a company. 
-You have just finished analyzing the attached 10-K report Part 2. 
-Please provide ratings for the following aspects from 1 to 100, where 1 is the lowest rating and 100 is the highest rating.
-Your response should be in JSON format and include the following fields:
-
-- "liquidity_rating": The company's liquidity rating
-- "solvency_rating": The company's solvency rating
-- "financial_risk_rating": The company's financial risk rating
-    """
-)
-
 # client.beta.threads.messages.create(
 #     thread_id=thread.id,
 #     role="user",
 #     file_ids=[file.id],
 #     content="""
-# You are an AI trained to analyze 10-K Part 4 reports and provide ratings for various aspects of a company. 
-# You have just finished analyzing the attached 10-K report Part 4. 
+# You are an AI trained to analyze 10-K Part 2 reports and provide ratings for various aspects of a company. 
+# You have just finished analyzing the attached 10-K report Part 2. 
 # Please provide ratings for the following aspects from 1 to 100, where 1 is the lowest rating and 100 is the highest rating.
 # Your response should be in JSON format and include the following fields:
 
-# - "compliance_rating": The company's compliance rating
-# - "market_risk_rating": The company's market risk rating
-# - "revenue_growth_rating": The company's revenue growth rating
-# - "esg_rating": The company's ESG (Environmental, Social, Governance) rating
+# - "liquidity_rating": The company's liquidity rating
+# - "liquidity_rating_reason": The reason for the company's liquidity rating
+# - "solvency_rating": The company's solvency rating
+# - "solvency_rating_reason": The reason for the company's solvency rating
+# - "financial_risk_rating": The company's financial risk rating
+# - "financial_risk_rating_reason": The reason for the company's financial risk rating
 #     """
 # )
+
+client.beta.threads.messages.create(
+    thread_id=thread.id,
+    role="user",
+    file_ids=[file.id],
+    content="""
+You are an AI trained to analyze 10-K Part 4 reports and provide ratings for various aspects of a company. 
+You have just finished analyzing the attached 10-K report Part 4. 
+Please provide ratings for the following aspects from 1 to 100, where 1 is the lowest rating and 100 is the highest rating.
+Your response should be in JSON format and include the following fields:
+
+- "compliance_rating": The company's compliance rating
+- "compliance_rating_reason": The reason for the company's compliance rating
+- "market_risk_rating": The company's market risk rating
+- "market_risk_rating_reason": The reason for the company's market risk rating
+- "revenue_growth_rating": The company's revenue growth rating
+- "revenue_growth_rating_reason": The reason for the company's revenue growth rating
+- "esg_rating": The company's ESG (Environmental, Social, Governance) rating
+- "esg_rating_reason": The reason for the company's ESG rating
+    """
+)
 
 run = client.beta.threads.runs.create(
   thread_id=thread.id,
