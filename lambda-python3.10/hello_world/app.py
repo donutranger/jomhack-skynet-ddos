@@ -1,4 +1,7 @@
 import json
+import boto3
+import os
+import base64
 
 # import requests
 
@@ -40,3 +43,24 @@ def lambda_handler(event, context):
             # "location": ip.text.replace("\n", "")
         }),
     }
+
+
+def upload_buisnes_overview(event, context):
+    s3 = boto3.client('s3')
+    bucket_name = os.environ['BUCKET_NAME']
+
+    
+
+    try:
+        file_content = base64.b64decode(event['body'])
+        file_name = "buisnes_overview.pdf"
+        s3.put_object(Bucket=bucket_name, Key=file_name, Body=file_content)
+        return {
+            'statusCode': 200,
+            'body': 'File uploaded successfully'
+        }
+    except Exception as e:
+        return {
+            'statusCode': 500,
+            'body': 'Error in uploading file: ' + str(e)
+        }

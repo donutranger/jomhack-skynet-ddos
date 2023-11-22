@@ -9,6 +9,10 @@ Description: >
 Globals:
   Function:
     Timeout: 3
+  Api:
+    BinaryMediaTypes:
+      - "multipart/form-data"
+      - "application/json"
 
 Resources:
   HelloWorldFunction:
@@ -25,6 +29,27 @@ Resources:
           Properties:
             Path: /hello
             Method: get
+  UploadBusinessOverview:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: hello_world/
+      Handler: app.upload_buisnes_overview
+      Runtime: python3.10
+      Architectures:
+        - x86_64
+      Policies:
+        - S3CrudPolicy:
+            BucketName: 'arn:aws:s3:::canyouhackit'
+      Environment:
+        Variables:
+          BUCKET_NAME: 'arn:aws:s3:::canyouhackit'
+      Events:
+        UploadEvent:
+          Type: Api
+          Properties:
+            Path: /business-overview
+            Method: post
+          
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
