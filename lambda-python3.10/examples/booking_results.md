@@ -101,22 +101,39 @@ The ratings reflect a moderately strong position, with acknowledgments of existi
 
 # Part 2 Doesn't work yet 
 
- Based on the information available from the 10-K Part 2 report document, here are the ratings in a JSON format:
+ Based on the analysis of the part 2 of the 10-K report for the company, here\'s how the company rates on the aspects of liquidity, solvency, and financial risk:
+
+Liquidity Rating:
+
+The company had $11.8 billion in cash, cash equivalents and investments as of December 31, 2019, with a solid $4.9 billion net cash from operating activities despite a decrease from the previous year and significant repurchases of common stock. They also have a five-year unsecured revolving credit facility of $2.0 billion, adding to their liquidity options and demonstrating strong operating cash flows. However, they have also high expenses towards tax liabilities, repurchases of common stock, and payments related to acquisitions and other investments. Based on this, the liquidity rating is robust, but also reflects considerable cash outflows and commitments.
 
 ```json
 {
-  "liquidity_rating": "Rating not directly derivable from the provided information",
-  "solvency_rating": "Rating not directly derivable from the provided information",
-  "net_profit_margin": "Rating not directly derivable from the provided information",
-  "return_on_equity": "Rating not directly derivable from the provided information",
-  "asset_turnover": "Rating not directly derivable from the provided information",
-  "financial_risk_rating": "Rating not directly derivable from the provided information",
-  "operating_margin": "Rating not directly derivable from the provided information"
+  "liquidity_rating": 85
 }
 ```
 
-Please note that directly deriving numeric ratings from the 10-K Part 2 report is not feasible as the report does not contain comparative metrics or benchmarks that would enable assigning such precise scores. Ratings like these usually require an array of financial metrics, historical data, and industry benchmarks which are not provided in the snippets【13†source】【19†source】【33†source】. If more specific financial details such as actual profit margins, return numbers, asset turnovers, and other metrics are provided, along with industry benchmarks, then a more informed rating could be generated. If you are able to provide further details or if there is more specific information elsewhere in the report, please let me know, and I will be able to assist you further.
+Solvency Rating:
 
+Given the scale of the operating cash flows and the strategic investments, along with long-term liabilities such as the transition tax liability and the commitments towards the new Booking.com headquarters, the company displays a strong balance between its liabilities and cash generation abilities. There are, however, significant obligations with respect to tax assessments that the company is contesting, which introduces potential future payout obligations, impacting the solvency rating.
+
+```json
+{
+  "solvency_rating": 80
+}
+```
+
+Financial Risk Rating:
+
+The company is involved in legal tax contingencies, particularly with the French tax authorities, and is under audits for several years. While they have made payments to preserve their rights to contest these, there\'s an inherent financial risk associated with potential outcomes of these disputes. This, coupled with substantial repurchases of its common stock, presents a level of financial risk despite its strong cash position and credit facilities.
+
+```json
+{
+  "financial_risk_rating": 70
+}
+```
+
+Overall, given that the information provided in the documents discusses several contingent liabilities and commitments, these ratings are a reflection of both the strengths in liquidity and solvency, tempered by the consideration of the various risks the company faces. Please note, that due to the complex nature of financial analysis, these ratings are subjective and based on interpretation of the information available in the 10-K Part 2 report excerpts provided【13†source】【17†source】.
 
 # Part 4
 
