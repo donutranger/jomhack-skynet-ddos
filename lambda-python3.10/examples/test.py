@@ -53,11 +53,7 @@ Your response should be in JSON format and include the following fields:
 
 - "liquidity_rating": The company's liquidity rating
 - "solvency_rating": The company's solvency rating
-- "net_profit_margin": The company's net profit margin
-- "return_on_equity": The company's return on equity
-- "asset_turnover": The company's asset turnover
 - "financial_risk_rating": The company's financial risk rating
-- "operating_margin": The company's operating margin
     """
 )
 
