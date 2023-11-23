@@ -45,11 +45,9 @@ def lambda_handler(event, context):
     }
 
 
-def upload_buisnes_overview(event, context):
+def upload_business_overview(event, context):
     s3 = boto3.client('s3')
     bucket_name = os.environ['BUCKET_NAME']
-
-    
 
     try:
         file_content = base64.b64decode(event['body'])
@@ -64,3 +62,22 @@ def upload_buisnes_overview(event, context):
             'statusCode': 500,
             'body': 'Error in uploading file: ' + str(e)
         }
+
+def process_business_overview(event, context):
+    print("Processing buisnes overview...")
+
+
+    # try:
+    #     file_content = base64.b64decode(event['body'])
+    #     file_name = "buisnes_overview.pdf"
+    #     s3.put_object(Bucket=bucket_name, Key=file_name, Body=file_content)
+    #     return {
+    #         'statusCode': 200,
+    #         'body': 'File uploaded successfully'
+    #     }
+    # except Exception as e:
+    return {
+        'statusCode': 500,
+        'body': 'Error in processing file: '
+    }
+

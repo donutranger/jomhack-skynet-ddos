@@ -33,7 +33,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: hello_world/
-      Handler: app.upload_buisnes_overview
+      Handler: app.upload_business_overview
       Runtime: python3.10
       Architectures:
         - x86_64
@@ -49,6 +49,41 @@ Resources:
           Properties:
             Path: /business-overview
             Method: post
+  ProcessBusinessOverview:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: hello_world/
+      Handler: app.process_business_overview
+      Runtime: python3.10
+      Architectures:
+        - x86_64
+      DeadLetterQueue:
+        Type: SQS
+        TargetArn: !GetAtt MyDeadLetterQueue.Arn
+  BusinessOverviewStateMachine:
+    Type: AWS::Serverless::StateMachine
+    Properties:
+      Definition:
+        StartAt: UploadBusinessOverview
+        States:
+          UploadBusinessOverview:
+            Type: Task
+            Resource: !GetAtt UploadBusinessOverview.Arn
+            Next: ProcessBusinessOverview
+          ProcessBusinessOverview:
+            Type: Task
+            Resource: !GetAtt ProcessBusinessOverview.Arn
+            Retry:
+              - ErrorEquals:
+                  - States.ALL
+                IntervalSeconds: 1
+                MaxAttempts: 5
+                BackoffRate: 2.0
+            End: true
+      Role: !GetAtt StateExecutionRole.Arn
+  MyDeadLetterQueue:
+    Type: AWS::SQS::Queue
+  
           
 
 Outputs:
