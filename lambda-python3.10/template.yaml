@@ -39,10 +39,10 @@ Resources:
         - x86_64
       Policies:
         - S3CrudPolicy:
-            BucketName: 'arn:aws:s3:::canyouhackit'
+            BucketName: 'canyouhackit'
       Environment:
         Variables:
-          BUCKET_NAME: 'arn:aws:s3:::canyouhackit'
+          BUCKET_NAME: 'canyouhackit'
       Events:
         UploadEvent:
           Type: Api
