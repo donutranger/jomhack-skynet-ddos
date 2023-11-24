@@ -113,7 +113,40 @@ Resources:
                 Action:
                   - sqs:SendMessage
                 Resource: !GetAtt MyDeadLetterQueue.Arn
-
+  FormSubmissionFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/
+      Handler: forms.lambda_handler
+      Runtime: python3.10
+      Architectures:
+        - x86_64
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref FundingRequestsTable
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref FundingRequestsTable
+      Events:
+        SubmitForm:
+          Type: Api
+          Properties:
+            Path: /submit-form
+            Method: post
+  FundingRequestsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: wonderlend_skynet
+      AttributeDefinitions:
+        - AttributeName: RequestId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: RequestId
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+  
           
 
 Outputs:
@@ -129,3 +162,12 @@ Outputs:
   HelloWorldFunctionIamRole:
     Description: "Implicit IAM Role created for Hello World function"
     Value: !GetAtt HelloWorldFunctionRole.Arn
+  FormApi:
+    Description: "API Gateway endpoint URL for Prod stage for Form Submission function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/submit-form/"
+  FormFunction:
+    Description: "Form Submission Lambda Function ARN"
+    Value: !GetAtt FormSubmissionFunction.Arn
+  FormFunctionIamRole:
+    Description: "Implicit IAM Role created for Form Submission function"
+    Value: !GetAtt FormSubmissionFunctionRole.Arn
