@@ -3,7 +3,7 @@ Transform: AWS::Serverless-2016-10-31
 Description: >
   risk_engine
 
-  Sample SAM Template for lambda-python3.10
+  Sample SAM Template for lambda-python3.11
 
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
@@ -19,7 +19,7 @@ Resources:
     Properties:
       CodeUri: hello_world/
       Handler: app.upload_business_overview
-      Runtime: python3.10
+      Runtime: python3.11
       Architectures:
         - x86_64
       Policies:
@@ -40,7 +40,7 @@ Resources:
     Properties:
       CodeUri: hello_world/
       Handler: app.process_business_overview
-      Runtime: python3.10
+      Runtime: python3.11
       Architectures:
         - x86_64
       DeadLetterQueue:

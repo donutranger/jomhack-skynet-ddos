@@ -1,11 +1,13 @@
+import sys
+import os
+sys.path.append(os.curdir + '/package')
+
 import json
 import boto3
-import os
 import base64
 import hashlib
-from cgi import parse_header, parse_multipart, FieldStorage
-from io import BytesIO
 import re
+import openai
 
 
 
@@ -51,25 +53,14 @@ def upload_business_overview(event, context):
             })
         }
 
-def process_business_overview(event, context):
-    print("Processing buisnes overview...")
-
-    print(event)
-
-
-    # try:
-    #     file_content = base64.b64decode(event['body'])
-    #     file_name = "buisnes_overview.pdf"
-    #     s3.put_object(Bucket=bucket_name, Key=file_name, Body=file_content)
-    #     return {
-    #         'statusCode': 200,
-    #         'body': 'File uploaded successfully'
-    #     }
-    # except Exception as e:
-    return {
-        'statusCode': 500,
-        'body': 'Error in processing file: '
-    }
+        return {
+            'statusCode': 500,
+            'body': json.dumps({
+                'error': {
+                    'message': 'Error in processing file: ' + str(e),
+                }
+            })
+        }
 
 
 def calculate_checksum(file_content):
