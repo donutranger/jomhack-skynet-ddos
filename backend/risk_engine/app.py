@@ -9,6 +9,22 @@ import hashlib
 import re
 import openai
 
+BUSINESS_OVERVIEW_PROMPT = """
+You are an AI trained to analyze 10-K reports and provide ratings for various aspects of a company. 
+You have just finished analyzing the attached 10-K report. 
+Please provide ratings for the following aspects from 1 to 100, where 1 is the lowest rating and 100 is the highest rating.
+Your response should be in JSON format and include the following fields:
+
+- "market_position_rating": The company's market position rating
+- "market_position_rating_reason": The reason for the company's market position rating
+- "competitive_analysis_rating": The company's competitive analysis rating
+- "competitive_analysis_rating_reason": The reason for the company's competitive analysis rating
+- "industry_market_analysis": The company's industry and market analysis rating
+- "industry_market_analysis_reason": The reason for the company's industry and market analysis rating
+"""
+
+
+
 
 def upload_business_overview(event, context):
     return process_file('business_overview', event)
@@ -71,6 +87,71 @@ def process_file(type_of_file, event):
             })
         }
 
+def analyze_file(type, content):
+    client = openai.OpenAI(api_key=os.environ['OPENAI_API_KEY'])
+
+    assistant = client.beta.assistants.create(
+        name="Risk Engine",
+        instructions="You are an AI trained to analyze 10-K reports",
+        tools=[{"type": "retrieval"}],
+        model="gpt-4-1106-preview",
+    )
+
+    file = client.files.create(
+        file=content,
+        purpose='assistants'
+    )
+
+    client.beta.assistants.files.create(
+        assistant_id=assistant.id,
+        file_id=file.id
+    )
+
+    thread = client.beta.threads.create()
+    
+    #TODO: change prompt based on type
+    promt = BUSINESS_OVERVIEW_PROMPT
+
+    message = client.beta.threads.messages.create(
+    thread_id=thread.id,
+    role="user",
+    file_ids=[file.id],
+    content=promt
+    )
+
+    run = client.beta.threads.runs.create(
+        thread_id=thread.id,
+        assistant_id=assistant.id,
+        instructions="",
+        )
+
+
+    while True:
+        run = client.beta.threads.runs.retrieve(
+            thread_id=thread.id,
+            run_id=run.id
+        )
+
+        if run.status == "completed":
+            print("done!")
+            messages = client.beta.threads.messages.list(
+                thread_id=thread.id
+            )
+
+            print("messages: ")
+            for message in messages:
+                print({
+                    "role": message.role,
+                    "message": message.content[0].text.value
+                })
+
+            client.beta.assistants.delete(assistant.id)
+            
+            break
+        else:
+            print("in progress...")
+            time.sleep(5)
+    return
 
 def calculate_checksum(file_content):
     sha256_hash = hashlib.sha256()
