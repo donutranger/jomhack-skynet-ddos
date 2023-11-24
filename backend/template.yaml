@@ -17,7 +17,7 @@ Resources:
   UploadBusinessOverview:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: hello_world/
+      CodeUri: risk_engine/
       Handler: app.upload_business_overview
       Runtime: python3.11
       Architectures:
@@ -28,12 +28,54 @@ Resources:
       Environment:
         Variables:
           BUCKET_NAME: 'canyouhackit'
-          OPENAI_API_KEY: 'HERE OPENAI API KEY'
+          OPENAI_API_KEY: 'canyouhackit'
       Events:
         UploadEvent:
           Type: Api
           Properties:
-            Path: /business-overview
+            Path: /upload/business
+            Method: post
+  UploadFinancialStatements:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: risk_engine/
+      Handler: app.upload_financial_statements
+      Runtime: python3.11
+      Architectures:
+        - x86_64
+      Policies:
+        - S3CrudPolicy:
+            BucketName: 'canyouhackit'
+      Environment:
+        Variables:
+          BUCKET_NAME: 'canyouhackit'
+          OPENAI_API_KEY: 'canyouhackit'
+      Events:
+        UploadEvent:
+          Type: Api
+          Properties:
+            Path: /upload/financial
+            Method: post
+  UploadCompliance:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: risk_engine/
+      Handler: app.upload_compliance
+      Runtime: python3.11
+      Architectures:
+        - x86_64
+      Policies:
+        - S3CrudPolicy:
+            BucketName: 'canyouhackit'
+      Environment:
+        Variables:
+          BUCKET_NAME: 'canyouhackit'
+          OPENAI_API_KEY: 'canyouhackit'
+      Events:
+        UploadEvent:
+          Type: Api
+          Properties:
+            Path: /upload/compliance
             Method: post
   FormSubmissionFunction:
     Type: AWS::Serverless::Function
@@ -81,12 +123,6 @@ Outputs:
   RiskEngineApi:
     Description: "API Gateway endpoint URL for Prod stage for Hello World function"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
-  HelloWorldFunction:
-    Description: "Hello World Lambda Function ARN"
-    Value: !GetAtt HelloWorldFunction.Arn
-  HelloWorldFunctionIamRole:
-    Description: "Implicit IAM Role created for Hello World function"
-    Value: !GetAtt HelloWorldFunctionRole.Arn
   FormApi:
     Description: "API Gateway endpoint URL for Prod stage for Form Submission function"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/submit-form/"
