@@ -2,62 +2,35 @@ import json
 import boto3
 import os
 import base64
+import hashlib
+from cgi import parse_header, parse_multipart, FieldStorage
+from io import BytesIO
+import re
 
-# import requests
-
-
-def lambda_handler(event, context):
-    """Sample pure Lambda function
-
-    Parameters
-    ----------
-    event: dict, required
-        API Gateway Lambda Proxy Input Format
-
-        Event doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-input-format
-
-    context: object, required
-        Lambda Context runtime methods and attributes
-
-        Context doc: https://docs.aws.amazon.com/lambda/latest/dg/python-context-object.html
-
-    Returns
-    ------
-    API Gateway Lambda Proxy Output Format: dict
-
-        Return doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html
-    """
-
-    # try:
-    #     ip = requests.get("http://checkip.amazonaws.com/")
-    # except requests.RequestException as e:
-    #     # Send some context about this error to Lambda Logs
-    #     print(e)
-
-    #     raise e
-
-    return {
-        "statusCode": 200,
-        "body": json.dumps({
-            "message": "hello world",
-            # "location": ip.text.replace("\n", "")
-        }),
-    }
 
 
 def upload_business_overview(event, context):
-    s3 = boto3.client('s3')
-    bucket_name = os.environ['BUCKET_NAME']
-
     try:
-        file_content = base64.b64decode(event['body'])
-        file_name = "buisnes_overview.pdf"
+        file_content = get_file_content(event)
+        checksum = calculate_checksum(file_content)
+        file_name = "buisnes_overview_"+checksum+".pdf" 
+        print(file_name)
+
+        if is_file_exists(file_name):
+            return {
+                'statusCode': 200,
+                'body': 'File already exists ' + file_name,
+            }
+        
+        s3 = boto3.client('s3')
+        bucket_name = os.environ['BUCKET_NAME']
         s3.put_object(Bucket=bucket_name, Key=file_name, Body=file_content)
 
         return {
             'statusCode': 200,
             'body': 'File uploaded successfully ' + file_name,
         }
+        
     except Exception as e:
         return {
             'statusCode': 500,
@@ -84,3 +57,45 @@ def process_business_overview(event, context):
         'body': 'Error in processing file: '
     }
 
+
+def calculate_checksum(file_content):
+    sha256_hash = hashlib.sha256()
+    sha256_hash.update(file_content)
+    return sha256_hash.hexdigest()
+
+def is_file_exists(file_name):
+    s3 = boto3.client('s3')
+    bucket_name = os.environ['BUCKET_NAME']
+    try:
+        s3.head_object(Bucket=bucket_name, Key=file_name)
+        return True
+    except:
+        return False
+
+def get_file_content(event):
+    content_type = event['headers'].get('Content-Type', '') 
+    content_type = content_type or event['headers'].get('content-type', '')
+
+    if not content_type:
+        raise Exception("Can't find content-type header")
+
+    b = re.search('boundary=(.*)$', content_type).group(1)
+    if not b:
+        raise Exception("Can't find content-type boundary")
+
+
+    boundary = b''.join((b'--', b.encode()))
+    content = base64.b64decode(event['body'])
+
+    prefix_len = len(boundary) + 2
+    content = content[prefix_len:]
+    def test_part(part):
+        return (part != b'' and
+                part != b'\r\n' and
+                part[:4] != b'--\r\n' and
+                part != b'--')
+
+    parts = content.split(b''.join((b'\r\n', boundary)))
+    parts = tuple(x for x in parts if test_part(x))
+
+    return parts[0]
