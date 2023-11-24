@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  lambda-python3.10
+  risk_engine
 
   Sample SAM Template for lambda-python3.10
 
@@ -43,6 +43,7 @@ Resources:
       Environment:
         Variables:
           BUCKET_NAME: 'canyouhackit'
+          # QUEUE_URL: !GetAtt ProcessBusinessOverviewQueue.Arn
       Events:
         UploadEvent:
           Type: Api
@@ -83,7 +84,36 @@ Resources:
       Role: !GetAtt StateExecutionRole.Arn
   MyDeadLetterQueue:
     Type: AWS::SQS::Queue
-  
+  StateExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - states.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: StateExecutionPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - lambda:InvokeFunction
+                Resource: !GetAtt UploadBusinessOverview.Arn
+              - Effect: Allow
+                Action:
+                  - lambda:InvokeFunction
+                Resource: !GetAtt ProcessBusinessOverview.Arn
+              - Effect: Allow
+                Action:
+                  - sqs:SendMessage
+                Resource: !GetAtt MyDeadLetterQueue.Arn
+
           
 
 Outputs:

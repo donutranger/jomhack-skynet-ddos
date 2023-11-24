@@ -53,9 +53,10 @@ def upload_business_overview(event, context):
         file_content = base64.b64decode(event['body'])
         file_name = "buisnes_overview.pdf"
         s3.put_object(Bucket=bucket_name, Key=file_name, Body=file_content)
+
         return {
             'statusCode': 200,
-            'body': 'File uploaded successfully'
+            'body': 'File uploaded successfully ' + file_name,
         }
     except Exception as e:
         return {
@@ -65,6 +66,8 @@ def upload_business_overview(event, context):
 
 def process_business_overview(event, context):
     print("Processing buisnes overview...")
+
+    print(event)
 
 
     # try:
