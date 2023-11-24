@@ -23,7 +23,35 @@ Your response should be in JSON format and include the following fields:
 - "industry_market_analysis_reason": The reason for the company's industry and market analysis rating
 """
 
+FINANCIAL_STATEMENTS_PROMPT = """
+You are an AI trained to analyze 10-K Part 2 reports and provide ratings for various aspects of a company. 
+You have just finished analyzing the attached 10-K report Part 2. 
+Please provide ratings for the following aspects from 1 to 100, where 1 is the lowest rating and 100 is the highest rating.
+Your response should be in JSON format and include the following fields:
 
+- "liquidity_rating": The company's liquidity rating
+- "liquidity_rating_reason": The reason for the company's liquidity rating
+- "solvency_rating": The company's solvency rating
+- "solvency_rating_reason": The reason for the company's solvency rating
+- "financial_risk_rating": The company's financial risk rating
+- "financial_risk_rating_reason": The reason for the company's financial risk rating
+"""
+
+COMPLIANCE_PROMPT = """
+You are an AI trained to analyze 10-K Part 4 reports and provide ratings for various aspects of a company. 
+You have just finished analyzing the attached 10-K report Part 4. 
+Please provide ratings for the following aspects from 1 to 100, where 1 is the lowest rating and 100 is the highest rating.
+Your response should be in JSON format and include the following fields:
+
+- "compliance_rating": The company's compliance rating
+- "compliance_rating_reason": The reason for the company's compliance rating
+- "market_risk_rating": The company's market risk rating
+- "market_risk_rating_reason": The reason for the company's market risk rating
+- "revenue_growth_rating": The company's revenue growth rating
+- "revenue_growth_rating_reason": The reason for the company's revenue growth rating
+- "esg_rating": The company's ESG (Environmental, Social, Governance) rating
+- "esg_rating_reason": The reason for the company's ESG rating
+"""
 
 
 def upload_business_overview(event, context):
@@ -87,7 +115,7 @@ def process_file(type_of_file, event):
             })
         }
 
-def analyze_file(type, content):
+def analyze_file(type_of_file, content):
     client = openai.OpenAI(api_key=os.environ['OPENAI_API_KEY'])
 
     assistant = client.beta.assistants.create(
@@ -109,8 +137,13 @@ def analyze_file(type, content):
 
     thread = client.beta.threads.create()
     
-    #TODO: change prompt based on type
-    promt = BUSINESS_OVERVIEW_PROMPT
+    promts = {
+        "business_overview": BUSINESS_OVERVIEW_PROMPT,
+        "financial_statements": FINANCIAL_STATEMENTS_PROMPT,
+        "compliance": COMPLIANCE_PROMPT
+    }
+
+    promt = promts[type_of_file]
 
     message = client.beta.threads.messages.create(
     thread_id=thread.id,
@@ -125,29 +158,26 @@ def analyze_file(type, content):
         instructions="",
         )
 
+    result = wait_for_assistant_to_complete(thread.id, run.id)  
+    
+    return
+
+def wait_for_assistant_to_complete(thread_id, run_id):
+    client = openai.OpenAI(api_key=os.environ['OPENAI_API_KEY'])
 
     while True:
         run = client.beta.threads.runs.retrieve(
-            thread_id=thread.id,
-            run_id=run.id
+            thread_id=thread_id,
+            run_id=run_id
         )
 
         if run.status == "completed":
-            print("done!")
             messages = client.beta.threads.messages.list(
-                thread_id=thread.id
+                thread_id=thread_id
             )
 
-            print("messages: ")
-            for message in messages:
-                print({
-                    "role": message.role,
-                    "message": message.content[0].text.value
-                })
-
             client.beta.assistants.delete(assistant.id)
-            
-            break
+            return messages[0].content[0].text.value
         else:
             print("in progress...")
             time.sleep(5)
