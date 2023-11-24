@@ -19,7 +19,12 @@ def upload_business_overview(event, context):
         if is_file_exists(file_name):
             return {
                 'statusCode': 200,
-                'body': 'File already exists ' + file_name,
+                'body': json.dumps({
+                    'result': {
+                        'id': checksum,
+                        'message': 'File already exists
+                    }
+                })
             }
         
         s3 = boto3.client('s3')
@@ -28,13 +33,24 @@ def upload_business_overview(event, context):
 
         return {
             'statusCode': 200,
-            'body': 'File uploaded successfully ' + file_name,
+            'body': json.dumps({
+                'result': {
+                    'id': checksum,
+                    'message': 'File uploaded successfully'
+                }
+            })
         }
         
     except Exception as e:
         return {
             'statusCode': 500,
-            'body': 'Error in uploading file: ' + str(e)
+            'body': json.dumps({
+                'error': {
+                    'message': 'Error in uploading file: ' + str(e)
+                }
+            })
+            
+            'Error in uploading file: ' + str(e)
         }
 
 def process_business_overview(event, context):
