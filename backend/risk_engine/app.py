@@ -81,11 +81,9 @@ def process_file(type_of_file, event):
                     }
                 })
             }
-        
-        s3 = boto3.client('s3')
-        bucket_name = os.environ['BUCKET_NAME']
-        s3.put_object(Bucket=bucket_name, Key=file_name, Body=file_content)
 
+        save_fail_to_s3(file_name, file_content)
+        
         return {
             'statusCode': 200,
             'body': json.dumps({
@@ -115,7 +113,7 @@ def process_file(type_of_file, event):
             })
         }
 
-def analyze_file(type_of_file, content):
+def analyze_file(id, type_of_file, content):
     client = openai.OpenAI(api_key=os.environ['OPENAI_API_KEY'])
 
     assistant = client.beta.assistants.create(
@@ -158,8 +156,27 @@ def analyze_file(type_of_file, content):
         instructions="",
         )
 
-    result = wait_for_assistant_to_complete(thread.id, run.id)  
-    
+    result = wait_for_assistant_to_complete(thread.id, run.id) 
+
+    client.beta.assistants.delete(assistant.id)
+
+    parsed_result = parse_result(result)
+
+    save_fail_to_s3(type_of_file+"_"+id+".json", json.dumps(parsed_result))
+
+    return
+
+def parse_result(result):
+    #TODO: parse result to extract json, for now just return it as is
+
+    return result
+
+
+def save_fail_to_s3(file_name, content):
+    s3 = boto3.client('s3')
+    bucket_name = os.environ['BUCKET_NAME']
+    s3.put_object(Bucket=bucket_name, Key=file_name, Body=content)
+
     return
 
 def wait_for_assistant_to_complete(thread_id, run_id):
@@ -176,7 +193,6 @@ def wait_for_assistant_to_complete(thread_id, run_id):
                 thread_id=thread_id
             )
 
-            client.beta.assistants.delete(assistant.id)
             return messages[0].content[0].text.value
         else:
             print("in progress...")
