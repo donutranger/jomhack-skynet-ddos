@@ -22,7 +22,7 @@ def upload_business_overview(event, context):
                 'body': json.dumps({
                     'result': {
                         'id': checksum,
-                        'message': 'File already exists
+                        'message': 'File already exists',
                     }
                 })
             }
@@ -36,7 +36,7 @@ def upload_business_overview(event, context):
             'body': json.dumps({
                 'result': {
                     'id': checksum,
-                    'message': 'File uploaded successfully'
+                    'message': 'File uploaded successfully',
                 }
             })
         }
@@ -46,11 +46,9 @@ def upload_business_overview(event, context):
             'statusCode': 500,
             'body': json.dumps({
                 'error': {
-                    'message': 'Error in uploading file: ' + str(e)
+                    'message': 'Error in uploading file: ' + str(e),
                 }
             })
-            
-            'Error in uploading file: ' + str(e)
         }
 
 def process_business_overview(event, context):
