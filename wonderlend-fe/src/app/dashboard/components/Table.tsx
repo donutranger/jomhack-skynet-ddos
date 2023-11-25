@@ -127,6 +127,8 @@ const Table = () => {
     : null;
 
   if (
+    !!companyInfo &&
+    !!companyFiles &&
     Object.keys(companyInfo).length &&
     Object.keys(companyFiles).length &&
     !defaultData.find((data) => data.name === companyInfo?.company_name)
