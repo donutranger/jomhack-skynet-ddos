@@ -9,6 +9,7 @@ import hashlib
 import re
 import openai
 from requests_toolbelt.multipart import decoder
+import time
 
 BUSINESS_OVERVIEW_PROMPT = """
 You are an AI trained to analyze 10-K reports and provide ratings for various aspects of a company. 
@@ -55,8 +56,20 @@ Your response should be in JSON format and include the following fields:
 """
 
 
-CAPITAL_TABLE = """
+CAPITAL_PROMPT = """
+Please analyze the attached document, which contains a table relevant to investment or shareholder information. 
 
+Investor Name
+Holder Type
+Shares Held
+Investment Type
+
+Based on the extracted data, please provide a rating for capital risk the following aspects from 1 to 100, where 1 is the lowest rating and 100 is the highest rating.
+For example, if the company has a high amount of debt, you should provide a high rating for capital risk.
+Your response should be in JSON format and include the following fields:
+
+- "capital_risk_rating": The company's capital risk rating
+- "capital_risk_rating_reason": The reason for the company's capital risk rating
 """
 
 RISK_ENGINE_PROMT = """
@@ -120,6 +133,8 @@ def process_file(type_of_file, event):
 
         save_fail_to_s3(file_name, file_content)
 
+        # analyze_file(checksum, type_of_file, file_content)
+
         return {
             'statusCode': 200,
             'headers': {
@@ -175,6 +190,7 @@ def risk_report(event, context):
         business_overview_id = body.get('business_overview_id', '')
         financial_statements_id = body.get('financial_statements_id', '')
         compliance_id = body.get('compliance_id', '')
+        capital_id = body.get('capital_id', '')
 
         if not all([business_overview_id, financial_statements_id, compliance_id]):
             raise ValueError("Missing required field.")
@@ -188,18 +204,23 @@ def risk_report(event, context):
         if not is_file_exists("compliance_"+compliance_id+".json"):
             raise ValueError("Compliance results is not ready yet")
 
+        if not is_file_exists("capital_"+capital_id+".json"):
+            raise ValueError("Capital results is not ready yet")
+
         business_overview_result = get_file_content_from_s3("business_overview_"+business_overview_id+".json")
         financial_statements_result = get_file_content_from_s3("financial_statements_"+financial_statements_id+".json")
         compliance_result = get_file_content_from_s3("compliance_"+compliance_id+".json")
+        capital_result = get_file_content_from_s3("capital_"+capital_id+".json")
 
         combined_reports = {
             'business_overview': json.loads(business_overview_result),
             'financial_statements': json.loads(financial_statements_result),
             'compliance': json.loads(compliance_result),
+            'capital': json.loads(capital_result),
         }
 
         sha256_hash = hashlib.sha256()
-        sha256_hash.update((business_overview_id + financial_statements_id + compliance_id).encode('utf-8'))
+        sha256_hash.update((business_overview_id + financial_statements_id + compliance_id + capital_id).encode('utf-8'))
         checksum = sha256_hash.hexdigest()
 
         reports_file_name = "reports_"+checksum+".json"
@@ -275,7 +296,7 @@ def analyze_file(id, type_of_file, content):
 
     assistant = client.beta.assistants.create(
         name="Risk Engine",
-        instructions="You are an AI trained to analyze 10-K reports",
+        instructions="You are an AI trained to analyze 10-K reports, and provide ratings for various aspects of a company.",
         tools=[{"type": "retrieval"}],
         model="gpt-4-1106-preview",
     )
@@ -295,7 +316,8 @@ def analyze_file(id, type_of_file, content):
     promts = {
         "business_overview": BUSINESS_OVERVIEW_PROMPT,
         "financial_statements": FINANCIAL_STATEMENTS_PROMPT,
-        "compliance": COMPLIANCE_PROMPT
+        "compliance": COMPLIANCE_PROMPT,
+        "capital": CAPITAL_PROMPT,
     }
 
     promt = promts[type_of_file]
@@ -363,7 +385,12 @@ def wait_for_assistant_to_complete(thread_id, run_id):
                 thread_id=thread_id
             )
 
-            return messages[0].content[0].text.value
+            for message in messages:
+                print(message.content[0].text.value)
+                return message.content[0].text.value
+
+            raise Exception("Failed to retrieve messages")
+
         else:
             print("in progress...")
             time.sleep(5)
@@ -398,7 +425,7 @@ def get_file_content(event):
         content_type = 'multipart/form-data; boundary=' + boundary.decode()
         
     file_content = decoder.MultipartDecoder(content, content_type).parts[0].content
-    
+
     if not file_content:
         raise Exception("Can't find file content")
 
