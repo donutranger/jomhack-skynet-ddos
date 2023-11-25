@@ -258,7 +258,7 @@ def analyze_file(id, type_of_file, content):
     return
 
 def parse_result(result):
-    match = re.search(r'```json([^`]+)```', content, re.MULTILINE | re.DOTALL)
+    match = re.search(r'```json([^`]+)```', result, re.MULTILINE | re.DOTALL)
 
     json_code_block = match.group(1).strip() if match else None
 
