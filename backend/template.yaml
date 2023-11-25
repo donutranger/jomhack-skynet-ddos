@@ -50,6 +50,10 @@ Resources:
           Properties:
             Path: /upload/capital
             Method: options
+        KeepWarmEvent:
+          Type: Schedule
+          Properties:
+            Schedule: rate(5 minutes)
             
   UploadBusinessOverview:
     Type: AWS::Serverless::Function
@@ -65,12 +69,17 @@ Resources:
       Environment:
         Variables:
           BUCKET_NAME: 'canyouhackit'
+          OPENAI_API_KEY: 'OpenApiKey'
       Events:
         UploadEvent:
           Type: Api
           Properties:
             Path: /upload/business
             Method: post
+        KeepWarmEvent:
+          Type: Schedule
+          Properties:
+            Schedule: rate(5 minutes)
   UploadFinancialStatements:
     Type: AWS::Serverless::Function
     Properties:
@@ -85,13 +94,17 @@ Resources:
       Environment:
         Variables:
           BUCKET_NAME: 'canyouhackit'
-          OPENAI_API_KEY: 'canyouhackit'
+          OPENAI_API_KEY: 'OpenApiKey'
       Events:
         UploadEvent:
           Type: Api
           Properties:
             Path: /upload/financial
             Method: post
+        KeepWarmEvent:
+          Type: Schedule
+          Properties:
+            Schedule: rate(5 minutes)
   UploadCompliance:
     Type: AWS::Serverless::Function
     Properties:
@@ -106,13 +119,17 @@ Resources:
       Environment:
         Variables:
           BUCKET_NAME: 'canyouhackit'
-          OPENAI_API_KEY: 'canyouhackit'
+          OPENAI_API_KEY: 'OpenApiKey'
       Events:
         UploadEvent:
           Type: Api
           Properties:
             Path: /upload/compliance
             Method: post
+        KeepWarmEvent:
+          Type: Schedule
+          Properties:
+            Schedule: rate(5 minutes)
   UploadCapital:
     Type: AWS::Serverless::Function
     Properties:
@@ -127,7 +144,12 @@ Resources:
       Environment:
         Variables:
           BUCKET_NAME: 'canyouhackit'
+          OPENAI_API_KEY: 'OpenApiKey'
       Events:
+        KeepWarmEvent:
+          Type: Schedule
+          Properties:
+            Schedule: rate(5 minutes)
         UploadEvent:
           Type: Api
           Properties:
@@ -147,8 +169,12 @@ Resources:
       Environment:
         Variables:
           BUCKET_NAME: 'canyouhackit'
-          OPENAI_API_KEY: ''
+          OPENAI_API_KEY: 'OpenApiKey' 
       Events:
+        KeepWarmEvent:
+          Type: Schedule
+          Properties:
+            Schedule: rate(5 minutes)
         UploadEvent:
           Type: Api
           Properties:
@@ -188,6 +214,7 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
+       
   
 
   

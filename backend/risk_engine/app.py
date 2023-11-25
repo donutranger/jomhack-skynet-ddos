@@ -420,15 +420,15 @@ def get_file_content(event):
     has_boundary = re.search(r'boundary=(.*)', content_type)
 
     content = base64.b64decode(event['body'])
+    suffix = b''
     if not has_boundary:
         boundary = content.split(b'\r\n',2)[0]
         content_type = 'multipart/form-data; boundary=' + boundary.decode()
+        suffix = b''.join((b'\r\n', boundary, b'--\r\n'))
         
     file_content = decoder.MultipartDecoder(content, content_type).parts[0].content
 
-    suffix = b''.join((b'\r\n', boundary, b'--\r\n'))
-
-    if suffix == file_content[-len(suffix):]:
+    if suffix and suffix == file_content[-len(suffix):]:
         file_content = file_content[:-len(suffix)]
 
     if not file_content:
