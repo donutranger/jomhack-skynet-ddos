@@ -314,7 +314,13 @@ def get_file_content(event):
     if not content_type:
         raise Exception("Can't find content-type header")
 
+    has_boundary = re.search(r'boundary=(.*)', content_type)
+
     content = base64.b64decode(event['body'])
+    if not has_boundary:
+        boundary = content.split(b'\r\n',2)[0]
+        content_type = 'multipart/form-data; boundary=' + boundary.decode()
+        
     file_content = decoder.MultipartDecoder(content, content_type).parts[0].content
     
     if not file_content:
