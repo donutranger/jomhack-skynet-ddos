@@ -86,6 +86,9 @@ def upload_financial_statements(event, context):
 
 def upload_compliance(event, context):
     return process_file('compliance', event)
+
+def upload_capital_structure(event, context):
+    return process_file('capital_structure', event)
     
 def process_file(type_of_file, event):
     try:
@@ -260,7 +263,6 @@ def calculate_risk_rating (combined_reports):
 
     return parse_result(assistant_reply)
     
-
 
 def analyze_file(id, type_of_file, content):
     client = openai.OpenAI()
