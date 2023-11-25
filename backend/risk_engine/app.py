@@ -54,6 +54,11 @@ Your response should be in JSON format and include the following fields:
 - "esg_rating_reason": The reason for the company's ESG rating
 """
 
+
+CAPITAL_TABLE = """
+
+"""
+
 RISK_ENGINE_PROMT = """
 You are an AI trained to analyze 10-K reports and proved risk evaluation for approving loan
 You have just finished analyzing the attached 10-K and provided report for each section, that can in SECTION_REPORTS:
@@ -87,8 +92,9 @@ def upload_financial_statements(event, context):
 def upload_compliance(event, context):
     return process_file('compliance', event)
 
-def upload_capital_structure(event, context):
-    return process_file('capital_structure', event)
+def upload_capital(event, context):
+    return process_file('capital', event)
+
     
 def process_file(type_of_file, event):
     try:
