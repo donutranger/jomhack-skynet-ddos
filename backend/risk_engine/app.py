@@ -53,6 +53,20 @@ Your response should be in JSON format and include the following fields:
 - "esg_rating": The company's ESG (Environmental, Social, Governance) rating
 - "esg_rating_reason": The reason for the company's ESG rating
 """
+
+RISK_ENGINE_PROMT = """
+You are an AI trained to analyze 10-K reports and proved risk evaluation for approving loan
+You have just finished analyzing the attached 10-K and provided report for each section, that can in SECTION_REPORTS:
+You need to provide risk rating for the company based on the reports from 1 to 100, where 1 is the lowest rating and 100 is the highest rating.
+Your response should be in JSON format and include the following fields:
+
+- "risk_rating": The company's risk rating
+- "risk_rating_reason": The reason for the company's risk rating
+
+
+SECTION_REPORTS:
+"""
+
 def option_handler(event, context):
     return {
         'statusCode': 200,
@@ -143,7 +157,6 @@ def process_file(type_of_file, event):
 
 def risk_report(event, context):
     try: 
-        print(event)
         if event.get('body', '') == '':
             raise ValueError("Missing required field.")
 
@@ -170,6 +183,42 @@ def risk_report(event, context):
         financial_statements_result = get_file_content_from_s3("financial_statements_"+financial_statements_id+".json")
         compliance_result = get_file_content_from_s3("compliance_"+compliance_id+".json")
 
+        combined_reports = {
+            'business_overview': json.loads(business_overview_result),
+            'financial_statements': json.loads(financial_statements_result),
+            'compliance': json.loads(compliance_result),
+        }
+
+        sha256_hash = hashlib.sha256()
+        sha256_hash.update((business_overview_id + financial_statements_id + compliance_id).encode('utf-8'))
+        checksum = sha256_hash.hexdigest()
+
+        reports_file_name = "reports_"+checksum+".json"
+
+        if is_file_exists(reports_file_name):
+            combined_reports = get_file_content_from_s3(reports_file_name)
+
+            return {
+                'statusCode': 200,
+                'headers': {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers" : "Content-Type",
+                    "Access-Control-Allow-Methods": "OPTIONS,POST",
+                },
+                'body': json.dumps({
+                    'result': json.loads(combined_reports)
+                })
+            }
+
+        risk_rating = calculate_risk_rating(json.dumps(combined_reports))
+
+        if risk_rating is None:
+            raise ValueError("Failed to calculate risk rating")
+
+        combined_reports['risk_rating'] = json.loads(risk_rating)
+
+        save_fail_to_s3(reports_file_name, json.dumps(combined_reports))
+
         return {
             'statusCode': 200,
             'headers': {
@@ -178,11 +227,7 @@ def risk_report(event, context):
                 "Access-Control-Allow-Methods": "OPTIONS,POST",
             },
             'body': json.dumps({
-                'result': {
-                    'business_overview': json.loads(business_overview_result),
-                    'financial_statements': json.loads(financial_statements_result),
-                    'compliance': json.loads(compliance_result),
-                }
+                'result': combined_reports
             })
         }
     except Exception as e:
@@ -200,8 +245,25 @@ def risk_report(event, context):
             })
         }
 
+def calculate_risk_rating (combined_reports):
+    client = openai.OpenAI()
+
+    completion = client.chat.completions.create(
+        model="gpt-4",
+        messages=[
+            {"role": "system", "content": "You are an AI trained to analyze 10-K reports and proved risk evaluation for approving loan"},
+            {"role": "user", "content": RISK_ENGINE_PROMT + json.dumps(combined_reports)},
+        ],
+    )
+    
+    assistant_reply = completion.choices[0].message.content
+
+    return parse_result(assistant_reply)
+    
+
+
 def analyze_file(id, type_of_file, content):
-    client = openai.OpenAI(api_key=os.environ['OPENAI_API_KEY'])
+    client = openai.OpenAI()
 
     assistant = client.beta.assistants.create(
         name="Risk Engine",
@@ -258,7 +320,7 @@ def analyze_file(id, type_of_file, content):
     return
 
 def parse_result(result):
-    match = re.search(r'```json([^`]+)```', result, re.MULTILINE | re.DOTALL)
+    match = re.search(r'(\{[^\}]+\})', result, re.MULTILINE | re.DOTALL)
 
     json_code_block = match.group(1).strip() if match else None
 
