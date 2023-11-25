@@ -12,6 +12,7 @@ Globals:
   Api:
     BinaryMediaTypes:
       - "*/*"
+    MaximumPayloadSize: 10485760
     Cors:
       AllowMethods: "'OPTIONS,POST'"
       AllowHeaders: "'*'"
