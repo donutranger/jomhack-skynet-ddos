@@ -77,6 +77,28 @@ Resources:
           Properties:
             Path: /upload/compliance
             Method: post
+
+  RiskReport:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: risk_engine/
+      Handler: app.risk_report
+      Runtime: python3.11
+      Architectures:
+        - x86_64
+      Policies:
+        - S3CrudPolicy:
+            BucketName: 'canyouhackit'
+      Environment:
+        Variables:
+          BUCKET_NAME: 'canyouhackit'
+          OPENAI_API_KEY: 'canyouhackit'
+      Events:
+        UploadEvent:
+          Type: Api
+          Properties:
+            Path: /risk/report
+            Method: post
   FormSubmissionFunction:
     Type: AWS::Serverless::Function
     Properties:
