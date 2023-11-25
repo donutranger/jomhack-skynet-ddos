@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const IndustryScore = () => {
   return (
-    <div className="py-4 px-6 bg-white rounded-lg border shadow-sm flex-1 flex flex-col gap-4">
+    <div className="py-4 px-6 bg-white rounded-lg border shadow-md flex-1 flex flex-col gap-4">
       <h3 className="text-md font-semibold text-gray-800">Industry Score</h3>
       <div className="flex flex-col gap-2">
         <div className="flex-grow-1 text-3xl font-semibold text-gray-80 w-72">

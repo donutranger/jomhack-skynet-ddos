@@ -7,7 +7,7 @@ const CapitalBreakdown = () => {
   ];
 
   return (
-    <div className="flex-1 px-6 py-4 bg-white rounded-lg border shadow-sm flex flex-col gap-4">
+    <div className="flex-1 px-6 py-4 bg-white rounded-lg border shadow-md flex flex-col gap-4">
       <h3 className="text-md font-semibold text-gray-800 mb-2">
         Capital Breakdown
       </h3>

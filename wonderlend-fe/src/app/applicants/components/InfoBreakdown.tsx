@@ -1,6 +1,6 @@
 const InfoBreakdown = () => {
   return (
-    <div className="max-full px-6 py-4 bg-white rounded-lg border shadow-sm flex flex-col gap-4">
+    <div className="max-full px-6 py-4 bg-white rounded-lg border shadow-md flex flex-col gap-4">
       <h3 className="text-xl font-semibold text-gray-800">Info Breakdown</h3>
       <div>
         <p className="font-semibold text-gray-800">Market position rating:</p>

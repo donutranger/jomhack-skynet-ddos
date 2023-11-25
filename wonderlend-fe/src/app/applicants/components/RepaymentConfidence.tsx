@@ -8,7 +8,7 @@ const RepaymentConfidence = () => {
   const textColorClass = getTextColorClass(confidenceLevel);
 
   return (
-    <div className="px-6 py-4 bg-white rounded-lg border shadow-sm flex flex-col gap-7">
+    <div className="px-6 py-4 bg-white rounded-lg border shadow-md flex flex-col gap-7">
       <h3 className="text-md font-semibold text-gray-800">
         Confidence of Repayment
       </h3>
