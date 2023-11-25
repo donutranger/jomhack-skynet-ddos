@@ -65,7 +65,7 @@ const Success = () => {
     if (data?.result) {
       const companyInfoString =
         typeof window !== undefined
-          ? localStorage.getItem("organization-info")
+          ? window.localStorage.getItem("organization-info")
           : null;
       const companyInfo = companyInfoString
         ? JSON.parse(companyInfoString)

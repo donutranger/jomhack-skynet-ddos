@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import localFont from "@next/font/local";
+import localFont from "next/font/local";
 import "./globals.css";
 import Topbar from "~/components/topbar";
 import Providers from "./provider";
@@ -43,7 +43,10 @@ export default function RootLayout({
       <body>
         <div id="modal-root" />
         <Topbar />
-        <Providers>{children}</Providers>
+        <Providers>
+          <link rel="icon" href="/favicon.ico" sizes="any" />
+          {children}
+        </Providers>
       </body>
     </html>
   );

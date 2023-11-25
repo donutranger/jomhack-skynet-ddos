@@ -9,7 +9,7 @@ const LoanDetails = () => {
     .join(" ");
   const companyInfoString =
     typeof window !== undefined
-      ? localStorage.getItem("organization-info")
+      ? window.localStorage.getItem("organization-info")
       : null;
   const tempCompanyData = companyInfoString
     ? JSON.parse(companyInfoString)
