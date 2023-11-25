@@ -21,7 +21,9 @@ const FinancialStatement = () => {
         headers: {
           "Content-Type": "multipart/form-data",
         },
-      });
+      })
+        .then((res) => res.json())
+        .then((res) => res.result);
     },
   });
 
@@ -31,8 +33,7 @@ const FinancialStatement = () => {
         mutateAsync(file).then((res) => {
           setFileIds((prev) => ({
             ...prev,
-            // @ts-expect-error
-            financialStatementsId: res.result?.id,
+            financialStatementsId: res?.id,
             fileIsSubmitted: true,
           }));
         })

@@ -1,13 +1,19 @@
 "use client";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { useEffect, useMemo } from "react";
 import { Chart as ChartJS, registerables } from "chart.js";
 import { Doughnut, Line } from "react-chartjs-2";
 import Button from "~/components/button";
 import Sidebar from "~/components/sidebar";
+import { useFile } from "../provider";
 ChartJS.register(...registerables);
 
 const Success = () => {
+  const { setFileIds } = useFile();
+  const companyFilesString = localStorage.getItem("organization-files");
+  const companyFiles = companyFilesString
+    ? JSON.parse(companyFilesString)
+    : null;
   const { mutate, data } = useMutation({
     mutationFn: () => {
       return fetch(`${window.api_endpoint}/risk/report`, {
@@ -16,14 +22,10 @@ const Success = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          business_overview_id:
-            "47c3837481bf504d62d0cd3c7e9a8bd1bccf63b4cf134cdc0ba05a5b12a6869e",
-          financial_statements_id:
-            "6627c64e3468193b38a7bb6e7f9a14e01ca18769c88325d86337f2392f0197d7",
-          compliance_id:
-            "58b1d84a744937458effd1115a1dd1f3b6d9b8f3f7c4c5cf3b67c64e4324a925",
-          capital_id:
-            "3c62a7d682124549ab8f92b2160ebd71bb89014348480d4fe4f8dbc2c86ba339",
+          business_overview_id: companyFiles.businessOverviewId,
+          financial_statements_id: companyFiles.financialStatementsId,
+          compliance_id: companyFiles.complianceId,
+          capital_id: companyFiles.capitalBreakdownId,
         }),
       })
         .then((res) => res.json())
@@ -32,6 +34,17 @@ const Success = () => {
   });
 
   useEffect(() => mutate(), [mutate]);
+  useEffect(
+    () =>
+      data?.risk_rating?.risk_rating
+        ? setFileIds((prev) => ({
+            ...prev,
+            creditScore: data.risk_rating.risk_rating,
+          }))
+        : undefined,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [data?.risk_rating?.risk_rating]
+  );
 
   const chartData = useMemo(
     () => ({

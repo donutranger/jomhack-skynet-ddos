@@ -16,6 +16,7 @@ type TFileIds = {
   financialStatementsId: string;
   complianceId: string;
   capitalBreakdownId: string;
+  creditScore: number;
 };
 
 type TFileContext = {
@@ -41,7 +42,12 @@ const Providers: React.FC<PropsWithChildren<unknown>> = ({ children }) => {
     financialStatementsId: "",
     complianceId: "",
     capitalBreakdownId: "",
+    creditScore: 0,
   });
+
+  useEffect(() => {
+    localStorage.setItem("organization-files", JSON.stringify(fileIds));
+  }, [fileIds]);
 
   useEffect(() => {
     window.api_endpoint =
