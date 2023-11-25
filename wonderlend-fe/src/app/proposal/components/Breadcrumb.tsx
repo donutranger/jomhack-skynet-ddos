@@ -9,7 +9,7 @@ const Breadcrumb = () => {
   const paths = pathname.split("/").filter((path) => path !== "");
   return (
     <div className="flex items-center gap-1">
-      <Link href="/success" className="text-xs text-blue-400">
+      <Link href="/dashboard" className="text-xs text-blue-400">
         Home
       </Link>
       <Image src="/chevron.svg" alt="Step" width={24} height={24} />

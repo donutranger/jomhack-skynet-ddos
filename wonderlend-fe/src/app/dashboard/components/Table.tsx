@@ -68,7 +68,7 @@ const Table = () => {
       : null;
   const companyFilesString =
     typeof window !== "undefined"
-      ? localStorage.getItem("organization-files")
+      ? window.localStorage.getItem("organization-files")
       : null;
   const companyInfo = companyInfoString ? JSON.parse(companyInfoString) : null;
   const companyFiles = companyFilesString
