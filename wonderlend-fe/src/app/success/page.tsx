@@ -10,7 +10,10 @@ ChartJS.register(...registerables);
 
 const Success = () => {
   const { setFileIds } = useFile();
-  const companyFilesString = localStorage.getItem("organization-files");
+  const companyFilesString =
+    typeof window !== "undefined"
+      ? window.localStorage.getItem("organization-files")
+      : null;
   const companyFiles = companyFilesString
     ? JSON.parse(companyFilesString)
     : null;
@@ -22,10 +25,10 @@ const Success = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          business_overview_id: companyFiles.businessOverviewId,
-          financial_statements_id: companyFiles.financialStatementsId,
-          compliance_id: companyFiles.complianceId,
-          capital_id: companyFiles.capitalBreakdownId,
+          business_overview_id: companyFiles?.businessOverviewId,
+          financial_statements_id: companyFiles?.financialStatementsId,
+          compliance_id: companyFiles?.complianceId,
+          capital_id: companyFiles?.capitalBreakdownId,
         }),
       })
         .then((res) => res.json())

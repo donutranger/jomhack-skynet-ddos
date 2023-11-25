@@ -19,9 +19,18 @@ type TFileIds = {
   creditScore: number;
 };
 
+type TFiles = {
+  businessOverview: File[] | null;
+  financialStatements: File[] | null;
+  compliance: File[] | null;
+  capitalBreakdown: File[] | null;
+};
+
 type TFileContext = {
   fileIds: TFileIds;
+  files: TFiles;
   setFileIds: Dispatch<SetStateAction<TFileIds>>;
+  setFiles: Dispatch<SetStateAction<TFiles>>;
 };
 
 const FileContext = createContext<TFileContext | null>(null);
@@ -37,12 +46,18 @@ export const useFile = () => {
 
 const Providers: React.FC<PropsWithChildren<unknown>> = ({ children }) => {
   const [queryClient] = useState(() => new QueryClient());
-  const [fileIds, setFileIds] = useState({
+  const [fileIds, setFileIds] = useState<TFileIds>({
     businessOverviewId: "",
     financialStatementsId: "",
     complianceId: "",
     capitalBreakdownId: "",
     creditScore: 0,
+  });
+  const [files, setFiles] = useState<TFiles>({
+    businessOverview: null,
+    financialStatements: null,
+    compliance: null,
+    capitalBreakdown: null,
   });
 
   useEffect(() => {
@@ -56,7 +71,7 @@ const Providers: React.FC<PropsWithChildren<unknown>> = ({ children }) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <FileContext.Provider value={{ fileIds, setFileIds }}>
+      <FileContext.Provider value={{ files, fileIds, setFileIds, setFiles }}>
         {children}
       </FileContext.Provider>
     </QueryClientProvider>
