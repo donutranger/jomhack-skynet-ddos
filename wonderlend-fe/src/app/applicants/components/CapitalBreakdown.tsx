@@ -1,8 +1,15 @@
+import { usePathname } from "next/navigation";
 import { useMemo } from "react";
 import useCompanyInfo from "~/app/hooks/useCompanyInfo";
 
 const CapitalBreakdown = () => {
   const { getCompanyData } = useCompanyInfo();
+  const pathname = usePathname();
+  const currCompanyName = pathname
+    .split("/")[3]
+    .split("[A-Z]*")
+    .map((word) => word[0].toLocaleUpperCase() + word.slice(1))
+    .join(" ");
 
   const data = getCompanyData();
   const defaultData = [
@@ -24,13 +31,15 @@ const CapitalBreakdown = () => {
         "bg-emerald-300",
         "bg-violet-300",
         "bg-yellow-400",
-      ][Math.round(Math.random() * 4)],
+      ][Math.round(Math.random() * 3)],
     }));
   }, [data?.cap_breakdown]);
 
-  console.log(data);
-
-  const capBreakdownData = currData ?? defaultData;
+  const capBreakdownData = useMemo(() => {
+    if (currCompanyName === data?.company_name.toLowerCase())
+      return currData ?? defaultData;
+    return defaultData;
+  }, []);
 
   return (
     <div className="flex-1 px-6 py-4 bg-white rounded-lg border shadow-md flex flex-col gap-4">

@@ -49,10 +49,11 @@ const FinancialStatementData = () => {
   return (
     <div className={`grid grid-cols-4`}>
       {formData?.map((fd, index) => (
-        <div key={`${fd.title}-${index}`} className="flex flex-col">
-          <div className="h-10 p-2 font-bold bg-gray-200 rounded-ss-md rounded-se-md">
-            {fd.title}
-          </div>
+        <div
+          key={`${fd.title}-${index}`}
+          className="flex flex-col [&>*:first-child]:rounded-ss-md [&>*:last-child]:rounded-se-md"
+        >
+          <div className="h-10 p-2 font-bold bg-gray-200">{fd.title}</div>
           {
             // @ts-expect-error
             fd.values?.map((col, index) => (
