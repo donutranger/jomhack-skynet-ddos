@@ -57,7 +57,7 @@ def option_handler(event, context):
         'statusCode': 200,
         'headers': {
             'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'POST,OPTIONS',
+            'Access-Control-Allow-Methods': 'POST',
             'Access-Control-Allow-Headers': 'Content-Type'
         },
         'body': ''
@@ -83,7 +83,7 @@ def process_file(type_of_file, event):
                 'statusCode': 200,
                 'headers': {
                     'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Methods': 'POST,OPTIONS',
+                    'Access-Control-Allow-Methods': 'POST',
                     'Access-Control-Allow-Headers': 'Content-Type'
                 },
                 'body': json.dumps({
@@ -100,7 +100,7 @@ def process_file(type_of_file, event):
             'statusCode': 200,
             'headers': {
                 'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'POST,OPTIONS',
+                'Access-Control-Allow-Methods': 'POST',
                 'Access-Control-Allow-Headers': 'Content-Type'
             },
             'body': json.dumps({
@@ -116,7 +116,7 @@ def process_file(type_of_file, event):
             'statusCode': 500,
             'headers': {
                 'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'POST,OPTIONS',
+                'Access-Control-Allow-Methods': 'POST',
                 'Access-Control-Allow-Headers': 'Content-Type'
             },
             'body': json.dumps({
@@ -130,7 +130,7 @@ def process_file(type_of_file, event):
             'statusCode': 500,
             'headers': {
                 'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'POST,OPTIONS',
+                'Access-Control-Allow-Methods': 'POST',
                 'Access-Control-Allow-Headers': 'Content-Type'
             },
             'body': json.dumps({

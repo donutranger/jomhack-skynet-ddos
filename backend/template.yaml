@@ -18,6 +18,34 @@ Globals:
       AllowOrigin: "'*'"
 
 Resources:
+  OptionsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: risk_engine/
+      Handler: app.option_handler
+      Runtime: python3.11
+      Events:
+        OptionsRiskEvent:
+          Type: Api
+          Properties:
+            Path: /risk/report
+            Method: options
+        OptionsUploadBEvent:
+          Type: Api
+          Properties:
+            Path: /upload/business
+            Method: options
+        OptionsUploadFEvent:
+          Type: Api
+          Properties:
+            Path: /upload/financial
+            Method: options
+        OptionsUploadCEvent:
+          Type: Api
+          Properties:
+            Path: /upload/compliance
+            Method: options
+            
   UploadBusinessOverview:
     Type: AWS::Serverless::Function
     Properties:
