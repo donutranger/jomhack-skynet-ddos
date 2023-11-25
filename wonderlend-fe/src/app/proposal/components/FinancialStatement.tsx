@@ -1,15 +1,14 @@
 "use client";
 import { useMutation } from "@tanstack/react-query";
 import Image from "next/image";
-import React, { useState } from "react";
+import React from "react";
 import { useFile } from "~/app/provider";
 import Button from "~/components/button";
 import Dropzone from "~/components/dropzone";
 import Loader from "~/components/loader";
 
 const FinancialStatement = () => {
-  const [files, setFiles] = useState<File[] | null>(null);
-  const { setFileIds } = useFile();
+  const { files, setFiles, setFileIds } = useFile();
   const { mutateAsync, status } = useMutation({
     mutationFn: (file: File) => {
       const body = new FormData();
@@ -28,8 +27,8 @@ const FinancialStatement = () => {
   });
 
   const handleSubmit = () => {
-    if (files) {
-      files.map((file) =>
+    if (files && files.financialStatements) {
+      files.financialStatements.map((file) =>
         mutateAsync(file).then((res) => {
           setFileIds((prev) => ({
             ...prev,
@@ -59,15 +58,19 @@ const FinancialStatement = () => {
           </p>
         </div>
         <div className="max-w-sm flex flex-col justify-between">
-          <Dropzone onFileChange={(files: File[]) => setFiles(files)} />
+          <Dropzone
+            onFileChange={(files: File[]) =>
+              setFiles((prev) => ({ ...prev, financialStatements: files }))
+            }
+          />
           <Button
             text="Submit"
-            disabled={!files?.length}
+            disabled={!files?.financialStatements?.length}
             onClick={() => handleSubmit()}
           />
         </div>
       </div>
-      {status === "success" && (
+      {files?.financialStatements?.length && (
         <Image
           src="/FS.svg"
           alt="Financial statement"

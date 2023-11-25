@@ -6,8 +6,8 @@ import {
 } from "@tanstack/react-table";
 import moment from "moment";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React from "react";
-import { useFile } from "~/app/provider";
 
 type TCompany = {
   name: string;
@@ -113,22 +113,30 @@ const columns = [
 ];
 
 const Table = () => {
-  const companyInfoString = localStorage.getItem("organization-info");
-  const companyFilesString = localStorage.getItem("organization-files");
+  const companyInfoString =
+    typeof window !== "undefined"
+      ? window.localStorage.getItem("organization-info")
+      : null;
+  const companyFilesString =
+    typeof window !== "undefined"
+      ? localStorage.getItem("organization-files")
+      : null;
   const companyInfo = companyInfoString ? JSON.parse(companyInfoString) : null;
   const companyFiles = companyFilesString
     ? JSON.parse(companyFilesString)
     : null;
 
-  defaultData.unshift({
-    name: companyInfo.company_name as string,
-    score: companyFiles.creditScore,
-    status: "pending",
-    businessType: "Tourism",
-    actions: null,
-    dateApplied: moment().from(new Date()),
-  });
+  if (companyInfo && companyFiles)
+    defaultData.unshift({
+      name: companyInfo?.company_name as string,
+      score: companyFiles?.creditScore,
+      status: "pending",
+      businessType: "Tourism",
+      actions: null,
+      dateApplied: moment().from(new Date()),
+    });
 
+  const router = useRouter();
   const table = useReactTable({
     data: defaultData,
     columns,
@@ -167,7 +175,8 @@ const Table = () => {
         {table.getRowModel().rows.map((row) => (
           <tr
             key={row.id}
-            className="hover:bg-slate-100 [&>*:last-child]:flex [&>*:last-child]:justify-center"
+            className="hover:bg-slate-100 [&>*:last-child]:flex [&>*:last-child]:justify-center cursor-pointer"
+            onClick={() => router.push("/applicants/details")}
           >
             {row.getVisibleCells().map((cell) => (
               <td key={cell.id} className="py-4 px-3">

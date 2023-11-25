@@ -1,15 +1,14 @@
 "use client";
 import { useMutation } from "@tanstack/react-query";
 import Image from "next/image";
-import React, { useState } from "react";
+import React from "react";
 import { useFile } from "~/app/provider";
 import Button from "~/components/button";
 import Dropzone from "~/components/dropzone";
 import Loader from "~/components/loader";
 
 const ARR = () => {
-  const [files, setFiles] = useState<File[] | null>(null);
-  const { setFileIds } = useFile();
+  const { files, setFiles, setFileIds } = useFile();
   const { mutateAsync, status } = useMutation({
     mutationFn: (file: File) => {
       const body = new FormData();
@@ -28,8 +27,8 @@ const ARR = () => {
   });
 
   const handleSubmit = () => {
-    if (files) {
-      files.map((file) =>
+    if (files && files.compliance) {
+      files.compliance.map((file) =>
         mutateAsync(file).then((res) => {
           setFileIds((prev) => ({
             ...prev,
@@ -59,15 +58,19 @@ const ARR = () => {
           </p>
         </div>
         <div className="max-w-sm flex flex-col justify-between">
-          <Dropzone onFileChange={(files: File[]) => setFiles(files)} />
+          <Dropzone
+            onFileChange={(files: File[]) =>
+              setFiles((prev) => ({ ...prev, compliance: files }))
+            }
+          />
           <Button
             text="Submit"
-            disabled={!files?.length}
+            disabled={!files?.compliance?.length}
             onClick={() => handleSubmit()}
           />
         </div>
       </div>
-      {status === "success" && (
+      {files?.compliance?.length && (
         <Image
           src="/ARR.svg"
           alt="Annual recurring revenue"

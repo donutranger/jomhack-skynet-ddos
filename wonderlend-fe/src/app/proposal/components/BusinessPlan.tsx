@@ -1,15 +1,14 @@
 "use client";
 import { useMutation } from "@tanstack/react-query";
 import Image from "next/image";
-import React, { useState } from "react";
+import React from "react";
 import { useFile } from "~/app/provider";
 import Button from "~/components/button";
 import Dropzone from "~/components/dropzone";
 import Loader from "~/components/loader";
 
 const BusinessPlan = () => {
-  const [files, setFiles] = useState<File[] | null>(null);
-  const { setFileIds } = useFile();
+  const { setFileIds, files, setFiles } = useFile();
   const { mutateAsync, status } = useMutation({
     mutationFn: (file: File) => {
       const body = new FormData();
@@ -28,8 +27,8 @@ const BusinessPlan = () => {
   });
 
   const handleSubmit = () => {
-    if (files) {
-      files.map((file) =>
+    if (files && files.businessOverview) {
+      files.businessOverview.map((file) =>
         mutateAsync(file).then((res) => {
           setFileIds((prev) => ({
             ...prev,
@@ -57,15 +56,19 @@ const BusinessPlan = () => {
           </p>
         </div>
         <div className="max-w-sm flex flex-col justify-between">
-          <Dropzone onFileChange={(files: File[]) => setFiles(files)} />
+          <Dropzone
+            onFileChange={(files: File[]) =>
+              setFiles((prev) => ({ ...prev, businessOverview: files }))
+            }
+          />
           <Button
             text="Submit"
-            disabled={!files?.length}
+            disabled={!files?.businessOverview?.length}
             onClick={() => handleSubmit()}
           />
         </div>
       </div>
-      {status === "success" && (
+      {files?.businessOverview?.length && (
         <Image src="/BP.svg" alt="Business plan" width={1000} height={600} />
       )}
     </div>

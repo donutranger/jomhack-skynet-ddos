@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const linkMapper = {
-  home: ["/success", "/dashboard"],
+  home: ["/success", "/dashboard", "/applicants/details"],
 };
 
 const Sidebar = () => {
