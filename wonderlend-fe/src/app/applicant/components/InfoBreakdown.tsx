@@ -1,7 +1,7 @@
 const InfoBreakdown = () => {
 
     return (
-        <div className="max-w-xl px-4 py-2 bg-white rounded-lg border shadow-md">
+        <div className="px-4 py-2 bg-white rounded-lg border shadow-md">
             <h3 className="text-md font-semibold text-gray-800">Info Breakdown</h3>
             <p className="text-sm font-semibold text-gray-800 mt-2">Market position rating:</p>
             <p className="text-sm text-gray-600">

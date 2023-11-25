@@ -17,14 +17,17 @@ const Details = () => {
       <Sidebar />
       <Breadcrumb />
       <CompanyName />
-      <LoanDetails />
-      <IndustryScore />
-      <FinancialRisk />
-      <ESGScore />
-      <RepaymentConfidence />
-      <CapitalBreakdown />
+      <div className="grid grid-rows-1 grid-cols-4 gap-4">
+        <LoanDetails />
+        <IndustryScore />
+        <FinancialRisk />
+        <ESGScore />
+      </div>
+      <div className="grid grid-rows-1 grid-cols-2 gap-4">
+        <RepaymentConfidence />
+        <CapitalBreakdown />
+      </div>
       <InfoBreakdown />
-      <div className="flex justify-between gap-4 flex-wrap"></div>
     </div>
   );
 };

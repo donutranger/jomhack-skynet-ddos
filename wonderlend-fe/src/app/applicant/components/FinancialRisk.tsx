@@ -4,7 +4,7 @@ const FinancialRisk = () => {
     const lessRiskWidth = `${100 - riskPercentage}%`;
 
     return (
-        <div className="max-w-xs px-4 py-2 bg-white rounded-lg border shadow-md">
+        <div className="px-4 py-2 bg-white rounded-lg border shadow-md">
             <div className="flex flex-row">
                 <h3 className="text-md font-semibold text-gray-800">Financial Risk</h3>
                 <div className="ml-auto flex justify-between gap-2 text-xs text-gray-600 mt-2">
