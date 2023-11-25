@@ -8,6 +8,7 @@ import base64
 import hashlib
 import re
 import openai
+from requests_toolbelt.multipart import decoder
 
 BUSINESS_OVERVIEW_PROMPT = """
 You are an AI trained to analyze 10-K reports and provide ratings for various aspects of a company. 
@@ -313,23 +314,10 @@ def get_file_content(event):
     if not content_type:
         raise Exception("Can't find content-type header")
 
-    b = re.search('boundary=(.*)$', content_type).group(1)
-    if not b:
-        raise Exception("Can't find content-type boundary")
-
-
-    boundary = b''.join((b'--', b.encode()))
     content = base64.b64decode(event['body'])
+    file_content = decoder.MultipartDecoder(content, content_type).parts[0].content
+    
+    if not file_content:
+        raise Exception("Can't find file content")
 
-    prefix_len = len(boundary) + 2
-    content = content[prefix_len:]
-    def test_part(part):
-        return (part != b'' and
-                part != b'\r\n' and
-                part[:4] != b'--\r\n' and
-                part != b'--')
-
-    parts = content.split(b''.join((b'\r\n', boundary)))
-    parts = tuple(x for x in parts if test_part(x))
-
-    return parts[0]
+    return file_content
