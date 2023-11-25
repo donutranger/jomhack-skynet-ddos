@@ -12,6 +12,10 @@ Globals:
   Api:
     BinaryMediaTypes:
       - "*/*"
+    Cors:
+      AllowMethods: "'OPTIONS,POST'"
+      AllowHeaders: "'*'"
+      AllowOrigin: "'*'"
 
 Resources:
   UploadBusinessOverview:
@@ -99,6 +103,7 @@ Resources:
           Properties:
             Path: /risk/report
             Method: post
+
   FormSubmissionFunction:
     Type: AWS::Serverless::Function
     Properties:

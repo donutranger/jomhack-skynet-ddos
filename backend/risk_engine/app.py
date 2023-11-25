@@ -52,7 +52,16 @@ Your response should be in JSON format and include the following fields:
 - "esg_rating": The company's ESG (Environmental, Social, Governance) rating
 - "esg_rating_reason": The reason for the company's ESG rating
 """
-
+def option_handler(event, context):
+    return {
+        'statusCode': 200,
+        'headers': {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'POST,OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type'
+        },
+        'body': ''
+    }
 
 def upload_business_overview(event, context):
     return process_file('business_overview', event)
@@ -74,6 +83,8 @@ def process_file(type_of_file, event):
                 'statusCode': 200,
                 'headers': {
                     'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': 'POST,OPTIONS',
+                    'Access-Control-Allow-Headers': 'Content-Type'
                 },
                 'body': json.dumps({
                     'result': {
@@ -89,6 +100,8 @@ def process_file(type_of_file, event):
             'statusCode': 200,
             'headers': {
                 'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'POST,OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type'
             },
             'body': json.dumps({
                 'result': {
@@ -103,6 +116,8 @@ def process_file(type_of_file, event):
             'statusCode': 500,
             'headers': {
                 'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'POST,OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type'
             },
             'body': json.dumps({
                 'error': {
@@ -115,6 +130,8 @@ def process_file(type_of_file, event):
             'statusCode': 500,
             'headers': {
                 'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'POST,OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type'
             },
             'body': json.dumps({
                 'error': {
@@ -125,6 +142,7 @@ def process_file(type_of_file, event):
 
 def risk_report(event, context):
     try: 
+        print(event)
         if event.get('body', '') == '':
             raise ValueError("Missing required field.")
 
@@ -154,7 +172,9 @@ def risk_report(event, context):
         return {
             'statusCode': 200,
             'headers': {
-                'Access-Control-Allow-Origin': '*',
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers" : "Content-Type",
+                "Access-Control-Allow-Methods": "OPTIONS,POST",
             },
             'body': json.dumps({
                 'result': {
@@ -168,7 +188,9 @@ def risk_report(event, context):
         return {
             'statusCode': 500,
             'headers': {
-                'Access-Control-Allow-Origin': '*',
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers" : "Content-Type",
+                "Access-Control-Allow-Methods": "OPTIONS,POST",
             },
             'body': json.dumps({
                 'error': {
