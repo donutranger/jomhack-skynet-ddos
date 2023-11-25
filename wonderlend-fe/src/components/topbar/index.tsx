@@ -24,7 +24,9 @@ const Topbar = () => {
         </div>
         <Image
           src={
-            pathname === "/dashboard"
+            ["/dashboard", "/applicants/details"].find((link) =>
+              pathname.includes(link)
+            )
               ? "/hlb-acc-icon.svg"
               : "/startup-acc-icon.svg"
           }

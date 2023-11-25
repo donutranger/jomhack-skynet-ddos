@@ -10,10 +10,10 @@ const linkMapper = {
 const Sidebar = () => {
   const pathname = usePathname();
   const isActive = (key: keyof typeof linkMapper) =>
-    linkMapper[key].includes(pathname);
+    linkMapper[key].find((link) => pathname.includes(link));
 
   return (
-    <div className="absolute left-0 top-0 h-[94vh] w-14 shadow-lg bg-white z-10 flex flex-col gap-3 items-center pt-6">
+    <div className="fixed left-0 top-14 h-[94vh] w-14 shadow-lg bg-white z-10 flex flex-col gap-3 items-center pt-6">
       <Link
         href="/dashboard"
         className={`${
@@ -30,7 +30,7 @@ const Sidebar = () => {
         />
       </Link>
       <Link
-        href="#"
+        href="/proposal"
         className="flex w-10 h-10 rounded-lg justify-center items-center hover:bg-slate-200 cursor-pointer"
       >
         <Image src="/proposal.svg" alt="Proposal icon" width={24} height={24} />

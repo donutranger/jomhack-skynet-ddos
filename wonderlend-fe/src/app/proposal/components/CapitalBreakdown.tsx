@@ -8,7 +8,7 @@ import Dropzone from "~/components/dropzone";
 import Loader from "~/components/loader";
 
 const CapitalBreakdown = () => {
-  const { files, setFiles, setFileIds } = useFile();
+  const { fileIds, files, setFiles, setFileIds } = useFile();
   const { mutateAsync, status } = useMutation({
     mutationFn: (file: File) => {
       const body = new FormData();
@@ -70,7 +70,7 @@ const CapitalBreakdown = () => {
           />
         </div>
       </div>
-      {files?.capitalBreakdown?.length && (
+      {fileIds?.capitalBreakdownId && files?.capitalBreakdown?.length && (
         <Image
           src="/Capital_Breakdown.svg"
           alt="Capital breakdown"

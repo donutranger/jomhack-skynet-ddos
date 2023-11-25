@@ -1,9 +1,9 @@
 const CapitalBreakdown = () => {
   const data = [
-    { name: "Haris", percentage: 38.6, color: "bg-blue-400" },
-    { name: "Cradle", percentage: 30.8, color: "bg-green-400" },
-    { name: "Kirill", percentage: 22.5, color: "bg-teal-400" },
-    { name: "Antler", percentage: 8.1, color: "bg-purple-400" },
+    { name: "Haris", percentage: 34.6, color: "bg-blue-300" },
+    { name: "Cradle", percentage: 30.8, color: "bg-emerald-300" },
+    { name: "Kirill", percentage: 22.5, color: "bg-violet-300" },
+    { name: "Antler", percentage: 10.8, color: "bg-yellow-400" },
   ];
 
   return (
@@ -20,7 +20,7 @@ const CapitalBreakdown = () => {
           ></div>
         ))}
       </div>
-      <div className="flex gap-2 text-xs text-gray-600 mt-2">
+      <div className="flex gap-3 text-xs text-gray-600 mt-2">
         {data.map((item, idx) => (
           <div key={idx}>
             <span className="flex items-center">

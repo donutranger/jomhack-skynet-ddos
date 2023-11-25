@@ -17,7 +17,7 @@ const RepaymentConfidence = () => {
           {confidenceLevel}%
         </div>
 
-        <div className="flex justify-between text-xs text-gray-600">
+        <div className="flex justify-between text-xs text-gray-600 gap-2">
           <span className="flex items-center">
             <span className="h-2 w-2 bg-red-600 rounded-full mr-1"></span>
             0-49% - Low
