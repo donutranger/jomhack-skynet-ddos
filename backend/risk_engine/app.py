@@ -155,7 +155,24 @@ def upload_compliance(event, context):
     
 
 def upload_capital(event, context):
-    return process_file('capital', event)
+    result = process_file('capital', event)
+
+    if result['statusCode'] == 500:
+        return result
+
+    response_body = json.loads(result['body'])
+    capital = get_mocked_capital(response_body['result']['id'])
+
+    result['body'] = json.dumps({
+        'result': {
+            'id': response_body['result']['id'],
+            'capital': capital,
+            'message': response_body['result']['message'],
+        }
+    })
+
+    return result
+
 
     
 def process_file(type_of_file, event):
@@ -581,5 +598,51 @@ def get_mocked_revenue(id):
         {
             "month": "2020-12",
             "revenue": 1100000,
+        },
+    ]
+
+def get_mocked_capital(id):
+    return [
+        {
+            "investor_name": "Founder 1",
+            "holder_type": "Founder",
+            "shares_held": 500000,
+            "shares_held_percentage": 45,
+            "investment_type": "Common Stock",
+        },
+        {
+            "investor_name": "Founder 2",
+            "holder_type": "Founder",
+            "shares_held": 300000,
+            "shares_held_percentage": 25,
+            "investment_type": "Common Stock",
+        },
+        {
+            "investor_name": "VC Firm A",
+            "holder_type": "Investor",
+            "shares_held": 100000,
+            "shares_held_percentage": 8,
+            "investment_type": "Preferred Stock",
+        },
+        {
+            "investor_name": "Angel Investor B",
+            "holder_type": "Investor",
+            "shares_held": 50000,
+            "shares_held_percentage": 4,
+            "investment_type": "Preferred Stock",
+        },
+        {
+            "investor_name": "VC Firm C",
+            "holder_type": "Investor",
+            "shares_held": 150000,
+            "shares_held_percentage": 10,
+            "investment_type": "Preferred Stock",
+        },
+        {
+            "investor_name": "Investor D",
+            "holder_type": "Investor",
+            "shares_held": 100000,
+            "shares_held_percentage": 8,
+            "investment_type": "Common Stock",
         },
     ]

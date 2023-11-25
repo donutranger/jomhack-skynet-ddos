@@ -13,11 +13,11 @@ Based on the details provided in the 10-K Part 2 report, the ratings for the com
 ```json
 {
   "liquidity_rating": 85,
-  "liquidity_rating_reason": "The company has a strong liquidity position with a total of $8.3 billion in cash and cash equivalents and marketable securities as of December 31, 2021, indicating a high ability to meet its short-term obligations【13†source】.",
+  "liquidity_rating_reason": "The company has a strong liquidity position with a total of $8.3 billion in cash and cash equivalents and marketable securities as of December 31, 2021, indicating a high ability to meet its short-term obligations.",
   "solvency_rating": 75,
-  "solvency_rating_reason": "The company has issued $2.0 billion in 0% convertible senior notes due 2026, indicating a level of long-term financing that might affect solvency. However, the lack of regular interest payments on these notes reduces the immediate pressure on solvency, hinting at a moderate level of debt-related risk【19†source】.",
+  "solvency_rating_reason": "The company has issued $2.0 billion in 0% convertible senior notes due 2026, indicating a level of long-term financing that might affect solvency. However, the lack of regular interest payments on these notes reduces the immediate pressure on solvency, hinting at a moderate level of debt-related risk.",
   "financial_risk_rating": 70,
-  "financial_risk_rating_reason": "The company\'s financial risk is moderate, given its significant liquidity position and the strategic use of convertible senior notes. The absence of regular interest payments on the senior notes also lessens near-term financial risks, although their presence does indicate a significant long-term liability that must be managed【13†source】【19†source】."
+  "financial_risk_rating_reason": "The company's financial risk is moderate, given its significant liquidity position and the strategic use of convertible senior notes. The absence of regular interest payments on the senior notes also lessens near-term financial risks, although their presence does indicate a significant long-term liability that must be managed."
 }
 ```
 
