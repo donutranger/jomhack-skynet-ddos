@@ -270,6 +270,9 @@ def risk_report(event, context):
         if is_file_exists(reports_file_name):
             combined_reports = get_file_content_from_s3(reports_file_name)
 
+            reports = json.loads(combined_reports)
+            reports["questions"] = get_mocked_improvment_questions(checksum)
+
             return {
                 'statusCode': 200,
                 'headers': {
@@ -278,7 +281,7 @@ def risk_report(event, context):
                     "Access-Control-Allow-Methods": "OPTIONS,POST",
                 },
                 'body': json.dumps({
-                    'result': json.loads(combined_reports)
+                    'result': reports
                 })
             }
 
@@ -315,6 +318,8 @@ def risk_report(event, context):
         combined_reports['risk_rating'] = json.loads(risk_rating)
 
         save_fail_to_s3(reports_file_name, json.dumps(combined_reports))
+
+        combined_reports["questions"] = get_mocked_improvment_questions(checksum)
 
         return {
             'statusCode': 200,
@@ -644,5 +649,22 @@ def get_mocked_capital(id):
             "shares_held": 100000,
             "shares_held_percentage": 8,
             "investment_type": "Common Stock",
+        },
+    ]
+
+
+def get_mocked_improvment_questions(id):
+    return [
+        {
+            "question": "What is your marketing strategy?",
+            "field": "marketing_strategy",
+        },
+        {
+            "question": "Provide detailed customer acquisition cost breakdown",
+            "field": "customer_acquisition_cost",
+        },
+        {
+            "question": "You want to collect customer data, How are you planning to comply with PDPA?",
+            "field": "pdpa_compliance",
         },
     ]
