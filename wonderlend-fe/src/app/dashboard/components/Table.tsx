@@ -126,7 +126,11 @@ const Table = () => {
     ? JSON.parse(companyFilesString)
     : null;
 
-  if (companyInfo && companyFiles)
+  if (
+    Object.keys(companyInfo).length &&
+    Object.keys(companyFiles).length &&
+    !defaultData.find((data) => data.name === companyInfo?.company_name)
+  )
     defaultData.unshift({
       name: companyInfo?.company_name as string,
       score: companyFiles?.creditScore,

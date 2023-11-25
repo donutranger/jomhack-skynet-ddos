@@ -13,7 +13,7 @@ import InfoBreakdown from "../components/InfoBreakdown";
 
 const Details = () => {
   return (
-    <div className="w-full min-h-[94vh] h-max flex p-4 pl-16 flex-col gap-4 relative bg-white">
+    <div className="w-full min-h-[94vh] h-max flex p-6 pl-20 pb-12 flex-col gap-4 relative bg-white">
       <Sidebar />
       <Breadcrumb />
       <CompanyName />

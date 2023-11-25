@@ -13,7 +13,7 @@ const Sidebar = () => {
     linkMapper[key].includes(pathname);
 
   return (
-    <div className="absolute left-0 top-0 h-[94vh] w-14 shadow-lg bg-white z-10 flex flex-col gap-3 items-center pt-6">
+    <div className="fixed left-0 top-14 h-[94vh] w-14 shadow-lg bg-white z-10 flex flex-col gap-3 items-center pt-6">
       <Link
         href="/dashboard"
         className={`${
