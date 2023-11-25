@@ -45,39 +45,15 @@ const defaultData: TCompany[] = [
   {
     name: "Farfar Sdn Bhd",
     score: 92,
-    status: "pending",
+    status: "approved",
     businessType: "Tourism",
     dateApplied: moment().format("DD/MM/YYYY"),
     actions: null,
   },
   {
-    name: "Rumah Sdn Bhd",
-    score: 92,
-    status: "pending",
-    businessType: "Tourism",
-    dateApplied: moment().format("DD/MM/YYYY"),
-    actions: null,
-  },
-  {
-    name: "Rumah Sdn Bhd",
-    score: 92,
-    status: "pending",
-    businessType: "Tourism",
-    dateApplied: moment().format("DD/MM/YYYY"),
-    actions: null,
-  },
-  {
-    name: "Rumah Sdn Bhd",
-    score: 92,
-    status: "pending",
-    businessType: "Tourism",
-    dateApplied: moment().format("DD/MM/YYYY"),
-    actions: null,
-  },
-  {
-    name: "Rumah Sdn Bhd",
-    score: 92,
-    status: "pending",
+    name: "Skynet Sdn Bhd",
+    score: 87,
+    status: "rejected",
     businessType: "Tourism",
     dateApplied: moment().format("DD/MM/YYYY"),
     actions: null,
@@ -85,6 +61,24 @@ const defaultData: TCompany[] = [
 ];
 
 const columnHelper = createColumnHelper<TCompany>();
+
+const statusColorMapper: Record<
+  TCompany["status"],
+  { background: string; text: string }
+> = {
+  pending: {
+    background: "bg-gray-100",
+    text: "text-gray-600",
+  },
+  approved: {
+    background: "bg-green-100",
+    text: "text-green-600",
+  },
+  rejected: {
+    background: "bg-red-100",
+    text: "text-red-600",
+  },
+};
 
 const columns = [
   columnHelper.accessor("name", {
@@ -95,8 +89,15 @@ const columns = [
   }),
   columnHelper.accessor("status", {
     header: () => "Status",
-    cell: (info) =>
-      info.getValue()[0].toLocaleUpperCase() + info.getValue().slice(1),
+    cell: (info) => (
+      <span
+        className={`p-2 rounded-full text-sm px-2 py-1 ${
+          statusColorMapper[info.getValue()].background
+        } ${statusColorMapper[info.getValue()].text}`}
+      >
+        {info.getValue()[0].toLocaleUpperCase() + info.getValue().slice(1)}
+      </span>
+    ),
   }),
   columnHelper.accessor("businessType", {
     header: "Business Type",
