@@ -22,6 +22,8 @@ const Success = () => {
             "6627c64e3468193b38a7bb6e7f9a14e01ca18769c88325d86337f2392f0197d7",
           compliance_id:
             "58b1d84a744937458effd1115a1dd1f3b6d9b8f3f7c4c5cf3b67c64e4324a925",
+          capital_id:
+            "3c62a7d682124549ab8f92b2160ebd71bb89014348480d4fe4f8dbc2c86ba339",
         }),
       })
         .then((res) => res.json())
@@ -54,7 +56,8 @@ const Success = () => {
 
   if (!data)
     return (
-      <div className="h-[95vh] font-bold flex items-center justify-center">
+      <div className="h-[95vh] font-bold flex items-center justify-center relative">
+        <Sidebar />
         Loading...
       </div>
     );
