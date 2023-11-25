@@ -97,13 +97,62 @@ def option_handler(event, context):
     }
 
 def upload_business_overview(event, context):
-    return process_file('business_overview', event)
+    result = process_file('business_overview', event)
+
+    if result['statusCode'] == 500:
+        return result
+    
+    response_body = json.loads(result['body'])
+    company_info = get_mocked_company_info(response_body['result']['id'])
+
+    result['body'] = json.dumps({
+        'result': {
+            'id': response_body['result']['id'],
+            'company_info': company_info,
+            'message': response_body['result']['message'],
+        }
+    })
+
+    return result
 
 def upload_financial_statements(event, context):
-    return process_file('financial_statements', event)
+    result = process_file('financial_statements', event)
+
+    if result['statusCode'] == 500:
+        return result
+
+    response_body = json.loads(result['body'])
+    company_statements = get_mocked_company_statement(response_body['result']['id'])
+
+    result['body'] = json.dumps({
+        'result': {
+            'id': response_body['result']['id'],
+            'company_statements': company_statements,
+            'message': response_body['result']['message'],
+        }
+    })
+
+    return result
 
 def upload_compliance(event, context):
-    return process_file('compliance', event)
+    result = process_file('compliance', event)
+
+    if result['statusCode'] == 500:
+        return result
+
+    response_body = json.loads(result['body'])
+    revenue = get_mocked_revenue(response_body['result']['id'])
+
+    result['body'] = json.dumps({
+        'result': {
+            'id': response_body['result']['id'],
+            'revenue': revenue,
+            'message': response_body['result']['message'],
+        }
+    })
+
+    return result
+    
 
 def upload_capital(event, context):
     return process_file('capital', event)
@@ -240,7 +289,7 @@ def risk_report(event, context):
             'compliance': json.loads(compliance_result),
             'capital': json.loads(capital_result),
         }
-        
+
         risk_rating = calculate_risk_rating(json.dumps(combined_reports))
 
         if risk_rating is None:
@@ -436,3 +485,101 @@ def get_file_content(event):
         raise Exception("Can't find file content")
 
     return file_content
+
+
+def get_mocked_company_info(id):
+    #TODO: Mock for now in future this information will be fetched from database or goverment services
+    return {
+        "name": "Booking Holdings Inc",
+        "registration_number": "06-1528493",
+        "incorporation_date": "2001-07-30",
+        "registration_address": "800 Connecticut Avenue, Norwalk, CT",
+        "registration_postcode": "06854",
+        "origin_country": "Nederland",
+        "business_address": "800 Connecticut Avenue, Norwalk, CT",
+        "business_postcode": "06854",
+        "industry": "Travel Services",
+    }
+
+def get_mocked_company_statement(id):
+    return [
+        {
+            "year": "2020",
+            "revenue": "10,000,000",
+            "equity": "5,000,000",
+            "liabilities": "5,000,000",
+            "cash_from_operations": "2,000,000",
+            "cash_from_investing": "1,000,000",
+            "net_cash": "3,000,000",
+        },
+        {
+            "year": "2019",
+            "revenue": "9,000,000",
+            "equity": "4,000,000",
+            "liabilities": "5,000,000",
+            "cash_from_operations": "1,000,000",
+            "cash_from_investing": "1,000,000",
+            "net_cash": "2,000,000",
+        },
+        {
+            "year": "2018",
+            "revenue": "8,000,000",
+            "equity": "3,000,000",
+            "liabilities": "5,000,000",
+            "cash_from_operations": "1,000,000",
+            "cash_from_investing": "1,000,000",
+            "net_cash": "2,000,000",
+        },
+    ]
+
+def get_mocked_revenue(id):
+    return [
+        {
+            "month": "2020-01",
+            "revenue": 1000000,
+        },
+        {
+            "month": "2020-02",
+            "revenue": 800000,
+        },
+        {
+            "month": "2020-03",
+            "revenue": 900000,
+        },
+        {
+            "month": "2020-04",
+            "revenue": 400000,
+        },
+        {
+            "month": "2020-05",
+            "revenue": 300000,
+        },
+        {
+            "month": "2020-06",
+            "revenue": 900000,
+        },
+        {
+            "month": "2020-07",
+            "revenue": 1300000,
+        },
+        {
+            "month": "2020-08",
+            "revenue": 1200000,
+        },
+        {
+            "month": "2020-09",
+            "revenue": 1600000,
+        },
+        {
+            "month": "2020-10",
+            "revenue": 1300000,
+        },
+        {
+            "month": "2020-11",
+            "revenue": 1200000,
+        },
+        {
+            "month": "2020-12",
+            "revenue": 1100000,
+        },
+    ]
