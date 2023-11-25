@@ -10,7 +10,7 @@ const linkMapper = {
 const Sidebar = () => {
   const pathname = usePathname();
   const isActive = (key: keyof typeof linkMapper) =>
-    linkMapper[key].includes(pathname);
+    linkMapper[key].find((link) => pathname.includes(link));
 
   return (
     <div className="fixed left-0 top-14 h-[94vh] w-14 shadow-lg bg-white z-10 flex flex-col gap-3 items-center pt-6">

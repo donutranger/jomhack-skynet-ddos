@@ -8,58 +8,7 @@ import moment from "moment";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
-
-type TCompany = {
-  name: string;
-  score: number;
-  status: "pending" | "approved" | "rejected";
-  businessType: string;
-  dateApplied: string;
-  actions: null;
-};
-
-const defaultData: TCompany[] = [
-  {
-    name: "Rumah Sdn Bhd",
-    score: 92,
-    status: "pending",
-    businessType: "Tourism",
-    dateApplied: moment().format("DD/MM/YYYY"),
-    actions: null,
-  },
-  {
-    name: "Newell Road Sdn Bhd",
-    score: 69,
-    status: "pending",
-    businessType: "Tourism",
-    dateApplied: moment().format("DD/MM/YYYY"),
-    actions: null,
-  },
-  {
-    name: "Air Shad Sdn Bhd",
-    score: 69,
-    status: "pending",
-    businessType: "Tourism",
-    dateApplied: moment().format("DD/MM/YYYY"),
-    actions: null,
-  },
-  {
-    name: "Farfar Sdn Bhd",
-    score: 92,
-    status: "approved",
-    businessType: "Tourism",
-    dateApplied: moment().format("DD/MM/YYYY"),
-    actions: null,
-  },
-  {
-    name: "Skynet Sdn Bhd",
-    score: 87,
-    status: "rejected",
-    businessType: "Tourism",
-    dateApplied: moment().format("DD/MM/YYYY"),
-    actions: null,
-  },
-];
+import { TCompany, defaultData } from "~/app/constants";
 
 const columnHelper = createColumnHelper<TCompany>();
 
@@ -134,6 +83,7 @@ const Table = () => {
     !defaultData.find((data) => data.name === companyInfo?.company_name)
   )
     defaultData.unshift({
+      key: companyInfo?.company_name.split(" ").join("-").toLowerCase(),
       name: companyInfo?.company_name as string,
       score: companyFiles?.creditScore,
       status: "pending",
@@ -182,7 +132,9 @@ const Table = () => {
           <tr
             key={row.id}
             className="hover:bg-slate-100 [&>*:last-child]:flex [&>*:last-child]:justify-center cursor-pointer"
-            onClick={() => router.push("/applicants/details")}
+            onClick={() =>
+              router.push(`/applicants/details/${row.original.key}`)
+            }
           >
             {row.getVisibleCells().map((cell) => (
               <td key={cell.id} className="py-4 px-3">

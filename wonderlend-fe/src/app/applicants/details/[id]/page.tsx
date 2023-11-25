@@ -2,14 +2,14 @@
 import React from "react";
 import Breadcrumb from "~/app/proposal/components/Breadcrumb";
 import Sidebar from "~/components/sidebar";
-import IndustryScore from "../components/IndustryScore";
-import CompanyName from "../components/CompanyName";
-import LoanDetails from "../components/LoanDetails";
-import FinancialRisk from "../components/FinancialRisk";
-import ESGScore from "../components/ESGScore";
-import RepaymentConfidence from "../components/RepaymentConfidence";
-import CapitalBreakdown from "../components/CapitalBreakdown";
-import InfoBreakdown from "../components/InfoBreakdown";
+import IndustryScore from "../../components/IndustryScore";
+import CompanyName from "../../components/CompanyName";
+import LoanDetails from "../../components/LoanDetails";
+import FinancialRisk from "../../components/FinancialRisk";
+import ESGScore from "../../components/ESGScore";
+import RepaymentConfidence from "../../components/RepaymentConfidence";
+import CapitalBreakdown from "../../components/CapitalBreakdown";
+import InfoBreakdown from "../../components/InfoBreakdown";
 
 const Details = () => {
   return (
