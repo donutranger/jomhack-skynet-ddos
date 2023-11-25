@@ -112,38 +112,52 @@ def process_file(type_of_file, event):
         }
 
 def risk_report(event, context):
-    body = json.loads(event.get('body', '{}'))
+    try: 
+        if event.get('body', '') == '':
+            raise ValueError("Missing required field.")
 
-    business_overview_id = body.get('business_overview_id', '')
-    financial_statements_id = body.get('financial_statements_id', '')
-    compliance_id = body.get('compliance_id', '')
+        json_body = base64.b64decode(event['body'])
+        body = json.loads(json_body)
 
-    if not all([business_overview_id, financial_statements_id, compliance_id]):
-        raise ValueError("Missing required field.")
-    
-    if not is_file_exists("business_overview_"+business_overview_id+".json"):
-        raise ValueError("Business overview results is not ready yet")
+        business_overview_id = body.get('business_overview_id', '')
+        financial_statements_id = body.get('financial_statements_id', '')
+        compliance_id = body.get('compliance_id', '')
 
-    if not is_file_exists("financial_statements_"+financial_statements_id+".json"):
-        raise ValueError("Financial statements results is not ready yet")
+        if not all([business_overview_id, financial_statements_id, compliance_id]):
+            raise ValueError("Missing required field.")
+        
+        if not is_file_exists("business_overview_"+business_overview_id+".json"):
+            raise ValueError("Business overview results is not ready yet")
 
-    if not is_file_exists("compliance_"+compliance_id+".json"):
-        raise ValueError("Compliance results is not ready yet")
+        if not is_file_exists("financial_statements_"+financial_statements_id+".json"):
+            raise ValueError("Financial statements results is not ready yet")
 
-    business_overview_result = get_file_content_from_s3("business_overview_"+business_overview_id+".json")
-    financial_statements_result = get_file_content_from_s3("financial_statements_"+financial_statements_id+".json")
-    compliance_result = get_file_content_from_s3("compliance_"+compliance_id+".json")
+        if not is_file_exists("compliance_"+compliance_id+".json"):
+            raise ValueError("Compliance results is not ready yet")
 
-    return {
-        'statusCode': 200,
-        'body': json.dumps({
-            'result': {
-                'business_overview': json.loads(business_overview_result),
-                'financial_statements': json.loads(financial_statements_result),
-                'compliance': json.loads(compliance_result),
-            }
-        })
-    }
+        business_overview_result = get_file_content_from_s3("business_overview_"+business_overview_id+".json")
+        financial_statements_result = get_file_content_from_s3("financial_statements_"+financial_statements_id+".json")
+        compliance_result = get_file_content_from_s3("compliance_"+compliance_id+".json")
+
+        return {
+            'statusCode': 200,
+            'body': json.dumps({
+                'result': {
+                    'business_overview': json.loads(business_overview_result),
+                    'financial_statements': json.loads(financial_statements_result),
+                    'compliance': json.loads(compliance_result),
+                }
+            })
+        }
+    except Exception as e:
+        return {
+            'statusCode': 500,
+            'body': json.dumps({
+                'error': {
+                    'message': 'Error in processing file: ' + str(e),
+                }
+            })
+        }
 
 def analyze_file(id, type_of_file, content):
     client = openai.OpenAI(api_key=os.environ['OPENAI_API_KEY'])
