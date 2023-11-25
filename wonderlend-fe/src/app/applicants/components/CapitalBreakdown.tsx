@@ -1,10 +1,36 @@
+import { useMemo } from "react";
+import useCompanyInfo from "~/app/hooks/useCompanyInfo";
+
 const CapitalBreakdown = () => {
-  const data = [
+  const { getCompanyData } = useCompanyInfo();
+
+  const data = getCompanyData();
+  const defaultData = [
     { name: "Haris", percentage: 34.6, color: "bg-blue-300" },
     { name: "Cradle", percentage: 30.8, color: "bg-emerald-300" },
     { name: "Kirill", percentage: 22.5, color: "bg-violet-300" },
     { name: "Antler", percentage: 10.8, color: "bg-yellow-400" },
   ];
+
+  const currData = useMemo(() => {
+    if (!data?.cap_breakdown) return;
+
+    // @ts-expect-error
+    return data.cap_breakdown.map((cp) => ({
+      name: cp.investor_name,
+      percentage: cp.shares_held_percentage,
+      color: [
+        "bg-blue-300",
+        "bg-emerald-300",
+        "bg-violet-300",
+        "bg-yellow-400",
+      ][Math.round(Math.random() * 4)],
+    }));
+  }, [data?.cap_breakdown]);
+
+  console.log(data);
+
+  const capBreakdownData = currData ?? defaultData;
 
   return (
     <div className="flex-1 px-6 py-4 bg-white rounded-lg border shadow-md flex flex-col gap-4">
@@ -12,25 +38,31 @@ const CapitalBreakdown = () => {
         Capital Breakdown
       </h3>
       <div className="flex h-6 overflow-hidden gap-1">
-        {data.map((item, idx) => (
-          <div
-            key={idx}
-            className={`${item.color} flex-1 rounded-md`}
-            style={{ flex: `0 0 ${item.percentage}%` }}
-          ></div>
-        ))}
+        {
+          // @ts-expect-error
+          capBreakdownData.map((item, idx) => (
+            <div
+              key={idx}
+              className={`${item.color} flex-1 rounded-md`}
+              style={{ flex: `0 0 ${item.percentage}%` }}
+            ></div>
+          ))
+        }
       </div>
       <div className="flex gap-3 text-xs text-gray-600 mt-2">
-        {data.map((item, idx) => (
-          <div key={idx}>
-            <span className="flex items-center">
-              <span
-                className={`h-2 w-2 ${item.color} rounded-full mr-1`}
-              ></span>
-              {item.name}&nbsp;{item.percentage}%
-            </span>
-          </div>
-        ))}
+        {
+          // @ts-expect-error
+          capBreakdownData.map((item, idx) => (
+            <div key={idx}>
+              <span className="flex items-center">
+                <span
+                  className={`h-2 w-2 ${item.color} rounded-full mr-1`}
+                ></span>
+                {item.name}&nbsp;{item.percentage}%
+              </span>
+            </div>
+          ))
+        }
       </div>
     </div>
   );

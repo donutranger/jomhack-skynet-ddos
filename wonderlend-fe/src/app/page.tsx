@@ -1,14 +1,18 @@
-import Button from "~/components/button";
-import Dropzone from "~/components/dropzone";
-import Loader from "~/components/loader";
-import Stepper from "~/components/stepper";
+"use client";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Home() {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push("/dashboard");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      {/* <Dropzone /> */}
-      <Button text="Submit" />
-      {/* <Loader /> */}
+      Loading...
     </main>
   );
 }

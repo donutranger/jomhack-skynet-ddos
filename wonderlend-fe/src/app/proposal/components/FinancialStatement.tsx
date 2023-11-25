@@ -6,9 +6,12 @@ import { useFile } from "~/app/provider";
 import Button from "~/components/button";
 import Dropzone from "~/components/dropzone";
 import Loader from "~/components/loader";
+import useCompanyInfo from "../../hooks/useCompanyInfo";
+import FinancialStatementData from "./FinancialStatementData";
 
 const FinancialStatement = () => {
   const { fileIds, files, setFiles, setFileIds } = useFile();
+  const { setCompanyData } = useCompanyInfo();
   const { mutateAsync, status } = useMutation({
     mutationFn: (file: File) => {
       const body = new FormData();
@@ -35,6 +38,7 @@ const FinancialStatement = () => {
             financialStatementsId: res?.id,
             fileIsSubmitted: true,
           }));
+          setCompanyData("financial_statements", res?.company_statements);
         })
       );
     }
@@ -71,12 +75,7 @@ const FinancialStatement = () => {
         </div>
       </div>
       {fileIds?.financialStatementsId && files?.financialStatements?.length && (
-        <Image
-          src="/FS.svg"
-          alt="Financial statement"
-          width={1000}
-          height={600}
-        />
+        <FinancialStatementData />
       )}
     </div>
   );

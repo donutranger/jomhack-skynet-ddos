@@ -6,9 +6,12 @@ import { useFile } from "~/app/provider";
 import Button from "~/components/button";
 import Dropzone from "~/components/dropzone";
 import Loader from "~/components/loader";
+import useCompanyInfo from "../../hooks/useCompanyInfo";
+import CapitalBreakdownData from "./CapitalBreakdownData";
 
 const CapitalBreakdown = () => {
   const { fileIds, files, setFiles, setFileIds } = useFile();
+  const { setCompanyData } = useCompanyInfo();
   const { mutateAsync, status } = useMutation({
     mutationFn: (file: File) => {
       const body = new FormData();
@@ -35,6 +38,7 @@ const CapitalBreakdown = () => {
             capitalBreakdownId: res?.id,
             fileIsSubmitted: true,
           }));
+          setCompanyData("cap_breakdown", res?.capital);
         })
       );
     }
@@ -71,12 +75,7 @@ const CapitalBreakdown = () => {
         </div>
       </div>
       {fileIds?.capitalBreakdownId && files?.capitalBreakdown?.length && (
-        <Image
-          src="/Capital_Breakdown.svg"
-          alt="Capital breakdown"
-          width={1000}
-          height={600}
-        />
+        <CapitalBreakdownData />
       )}
     </div>
   );

@@ -12,11 +12,13 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { TFormData } from "./types";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import useCompanyInfo from "../hooks/useCompanyInfo";
 
 const Proposal = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const router = useRouter();
   const { register, handleSubmit } = useForm<TFormData>();
+  const { getCompanyData } = useCompanyInfo();
   const { mutateAsync } = useMutation({
     // @ts-expect-error
     mutationFn: (data: TFormData) => {
@@ -41,8 +43,11 @@ const Proposal = () => {
       //     },
       //   }
       // );
-
-      return localStorage.setItem("organization-info", JSON.stringify(body));
+      const companyData = getCompanyData();
+      return localStorage.setItem(
+        "organization-info",
+        JSON.stringify({ ...companyData, ...body })
+      );
     },
   });
 

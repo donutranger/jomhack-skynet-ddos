@@ -6,9 +6,12 @@ import { useFile } from "~/app/provider";
 import Button from "~/components/button";
 import Dropzone from "~/components/dropzone";
 import Loader from "~/components/loader";
+import useCompanyInfo from "../../hooks/useCompanyInfo";
+import ARRData from "./ARRData";
 
 const ARR = () => {
   const { fileIds, files, setFiles, setFileIds } = useFile();
+  const { setCompanyData } = useCompanyInfo();
   const { mutateAsync, status } = useMutation({
     mutationFn: (file: File) => {
       const body = new FormData();
@@ -35,6 +38,7 @@ const ARR = () => {
             complianceId: res?.id,
             fileIsSubmitted: true,
           }));
+          setCompanyData("revenue", res?.revenue);
         })
       );
     }
@@ -70,14 +74,7 @@ const ARR = () => {
           />
         </div>
       </div>
-      {fileIds?.complianceId && files?.compliance?.length && (
-        <Image
-          src="/ARR.svg"
-          alt="Annual recurring revenue"
-          width={1000}
-          height={600}
-        />
-      )}
+      {fileIds?.complianceId && files?.compliance?.length && <ARRData />}
     </div>
   );
 };

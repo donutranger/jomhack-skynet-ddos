@@ -6,9 +6,12 @@ import { useFile } from "~/app/provider";
 import Button from "~/components/button";
 import Dropzone from "~/components/dropzone";
 import Loader from "~/components/loader";
+import useSetCompanyInfo from "../../hooks/useCompanyInfo";
+import BusinessPlanData from "./BusinessPlanData";
 
 const BusinessPlan = () => {
   const { fileIds, setFileIds, files, setFiles } = useFile();
+  const { setCompanyData } = useSetCompanyInfo();
   const { mutateAsync, status } = useMutation({
     mutationFn: (file: File) => {
       const body = new FormData();
@@ -35,6 +38,7 @@ const BusinessPlan = () => {
             businessOverviewId: res?.id,
             fileIsSubmitted: true,
           }));
+          setCompanyData("company_info", res.company_info);
         })
       );
     }
@@ -69,7 +73,7 @@ const BusinessPlan = () => {
         </div>
       </div>
       {fileIds?.businessOverviewId && files?.businessOverview?.length && (
-        <Image src="/BP.svg" alt="Business plan" width={1000} height={600} />
+        <BusinessPlanData />
       )}
     </div>
   );
