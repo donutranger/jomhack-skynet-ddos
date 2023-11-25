@@ -13,7 +13,11 @@ const Dashboard = () => {
         <div className="flex justify-between">
           <div className="flex gap-4 border border-gray-400 rounded-md p-2 text-sm w-80">
             <Image src="/search.svg" alt="Search icon" width={16} height={16} />
-            <input type="text" placeholder="Search applicants" />
+            <input
+              type="text"
+              placeholder="Search applicants"
+              className="w-72 outline-none"
+            />
           </div>
           <div className="flex gap-2 border border-gray-400 rounded-md p-2 text-sm">
             <Image src="/filter.svg" alt="Search icon" width={16} height={16} />

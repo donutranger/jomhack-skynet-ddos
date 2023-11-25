@@ -9,7 +9,11 @@ import { useFile } from "../provider";
 ChartJS.register(...registerables);
 
 const Success = () => {
-  const { fileIds, setFileIds } = useFile();
+  const { setFileIds } = useFile();
+  const companyFilesString = localStorage.getItem("organization-files");
+  const companyFiles = companyFilesString
+    ? JSON.parse(companyFilesString)
+    : null;
   const { mutate, data } = useMutation({
     mutationFn: () => {
       return fetch(`${window.api_endpoint}/risk/report`, {
@@ -18,10 +22,10 @@ const Success = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          business_overview_id: fileIds.businessOverviewId,
-          financial_statements_id: fileIds.financialStatementsId,
-          compliance_id: fileIds.complianceId,
-          capital_id: fileIds.capitalBreakdownId,
+          business_overview_id: companyFiles.businessOverviewId,
+          financial_statements_id: companyFiles.financialStatementsId,
+          compliance_id: companyFiles.complianceId,
+          capital_id: companyFiles.capitalBreakdownId,
         }),
       })
         .then((res) => res.json())
