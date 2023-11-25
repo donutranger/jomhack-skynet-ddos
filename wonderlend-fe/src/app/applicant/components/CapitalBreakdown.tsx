@@ -7,7 +7,7 @@ const CapitalBreakdown = () => {
     ];
 
     return (
-        <div className="max-w-lg px-4 py-2 bg-white rounded-lg border shadow-sm">
+        <div className="max-w-lg px-4 py-2 bg-white rounded-lg border shadow-md">
             <h3 className="text-md font-semibold text-gray-800 mb-2">Capital Breakdown</h3>
             <div className="flex h-6 overflow-hidden gap-1">
                 {data.map((item, idx) => (

@@ -8,7 +8,7 @@ const RepaymentConfidence = () => {
     const textColorClass = getTextColorClass(confidenceLevel);
 
     return (
-        <div className="max-w-sm px-4 py-2 bg-white rounded-lg border shadow-sm">
+        <div className="max-w-sm px-4 py-2 bg-white rounded-lg border shadow-md">
             <h3 className="text-md font-semibold text-gray-800">Confidence of Repayment</h3>
             <div className={`text-2xl font-bold ${textColorClass} my-2`}>{confidenceLevel}%</div>
             

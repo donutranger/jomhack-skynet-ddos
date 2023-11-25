@@ -5,7 +5,7 @@ const ESGScore = () => {
     const strokeDashoffset = circumference - (score / 10) * circumference;
 
     return (
-        <div className="rounded-lg border shadow-sm w-60 h-auto relative bg-white flex flex-row items-center">
+        <div className="rounded-lg border shadow-md w-60 h-auto relative bg-white flex flex-row items-center">
             <div className="flex flex-col items-left p-4 min-w">
                 <div className="text-xl font-semibold">ESG Score</div>
                 <div className="text-sm text-gray-500">Overall</div>
