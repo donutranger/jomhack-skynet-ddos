@@ -192,8 +192,30 @@ def risk_report(event, context):
         compliance_id = body.get('compliance_id', '')
         capital_id = body.get('capital_id', '')
 
-        if not all([business_overview_id, financial_statements_id, compliance_id]):
+        if not all([business_overview_id, financial_statements_id, compliance_id, capital_id]):
             raise ValueError("Missing required field.")
+
+        sha256_hash = hashlib.sha256()
+        sha256_hash.update((business_overview_id + financial_statements_id + compliance_id + capital_id).encode('utf-8'))
+        checksum = sha256_hash.hexdigest()
+
+        reports_file_name = "reports_"+checksum+".json"
+
+        if is_file_exists(reports_file_name):
+            combined_reports = get_file_content_from_s3(reports_file_name)
+
+            return {
+                'statusCode': 200,
+                'headers': {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers" : "Content-Type",
+                    "Access-Control-Allow-Methods": "OPTIONS,POST",
+                },
+                'body': json.dumps({
+                    'result': json.loads(combined_reports)
+                })
+            }
+
         
         if not is_file_exists("business_overview_"+business_overview_id+".json"):
             raise ValueError("Business overview results is not ready yet")
@@ -218,28 +240,7 @@ def risk_report(event, context):
             'compliance': json.loads(compliance_result),
             'capital': json.loads(capital_result),
         }
-
-        sha256_hash = hashlib.sha256()
-        sha256_hash.update((business_overview_id + financial_statements_id + compliance_id + capital_id).encode('utf-8'))
-        checksum = sha256_hash.hexdigest()
-
-        reports_file_name = "reports_"+checksum+".json"
-
-        if is_file_exists(reports_file_name):
-            combined_reports = get_file_content_from_s3(reports_file_name)
-
-            return {
-                'statusCode': 200,
-                'headers': {
-                    "Access-Control-Allow-Origin": "*",
-                    "Access-Control-Allow-Headers" : "Content-Type",
-                    "Access-Control-Allow-Methods": "OPTIONS,POST",
-                },
-                'body': json.dumps({
-                    'result': json.loads(combined_reports)
-                })
-            }
-
+        
         risk_rating = calculate_risk_rating(json.dumps(combined_reports))
 
         if risk_rating is None:
