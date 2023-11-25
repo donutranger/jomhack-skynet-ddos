@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "@next/font/local";
 import "./globals.css";
 import Navbar from "~/components/navbar";
+import Providers from "./provider";
 
 const satoshi = localFont({
   src: [
@@ -30,8 +31,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${satoshi.variable} font-sans`}>
       <body>
+        <div id="modal-root" />
         <Navbar />
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

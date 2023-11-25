@@ -10,7 +10,6 @@ const Navbar = () => {
           alt="Wonderlend Logo"
           width={32}
           height={32}
-          priority
         />
         <p className="font-bold text-white">WonderLend</p>
       </div>
