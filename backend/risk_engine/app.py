@@ -62,14 +62,12 @@ def upload_financial_statements(event, context):
 
 def upload_compliance(event, context):
     return process_file('compliance', event)
-
     
 def process_file(type_of_file, event):
     try:
         file_content = get_file_content(event)
         checksum = calculate_checksum(file_content)
         file_name = type_of_file + "_"+checksum+".pdf" 
-        print(file_name)
 
         if is_file_exists(file_name):
             return {
@@ -83,7 +81,7 @@ def process_file(type_of_file, event):
             }
 
         save_fail_to_s3(file_name, file_content)
-        
+
         return {
             'statusCode': 200,
             'body': json.dumps({
