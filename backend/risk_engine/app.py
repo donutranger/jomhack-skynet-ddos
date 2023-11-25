@@ -426,6 +426,11 @@ def get_file_content(event):
         
     file_content = decoder.MultipartDecoder(content, content_type).parts[0].content
 
+    suffix = b''.join((b'\r\n', boundary, b'--\r\n'))
+
+    if suffix == file_content[-len(suffix):]:
+        file_content = file_content[:-len(suffix)]
+
     if not file_content:
         raise Exception("Can't find file content")
 
