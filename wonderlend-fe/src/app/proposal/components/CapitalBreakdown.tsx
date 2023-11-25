@@ -21,7 +21,9 @@ const CapitalBreakdown = () => {
         headers: {
           "Content-Type": "multipart/form-data",
         },
-      });
+      })
+        .then((res) => res.json())
+        .then((res) => res.result);
     },
   });
 
@@ -31,8 +33,7 @@ const CapitalBreakdown = () => {
         mutateAsync(file).then((res) => {
           setFileIds((prev) => ({
             ...prev,
-            // @ts-expect-error
-            capitalBreakdownId: res.result?.id,
+            capitalBreakdownId: res?.id,
             fileIsSubmitted: true,
           }));
         })

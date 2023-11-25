@@ -7,6 +7,7 @@ import {
 import moment from "moment";
 import Image from "next/image";
 import React from "react";
+import { useFile } from "~/app/provider";
 
 type TCompany = {
   name: string;
@@ -91,7 +92,7 @@ const columns = [
     header: () => "Status",
     cell: (info) => (
       <span
-        className={`p-2 rounded-full text-sm px-2 py-1 ${
+        className={`p-2 rounded-full text-sm px-2 py-1 font-semibold ${
           statusColorMapper[info.getValue()].background
         } ${statusColorMapper[info.getValue()].text}`}
       >
@@ -112,6 +113,22 @@ const columns = [
 ];
 
 const Table = () => {
+  const companyInfoString = localStorage.getItem("organization-info");
+  const companyFilesString = localStorage.getItem("organization-files");
+  const companyInfo = companyInfoString ? JSON.parse(companyInfoString) : null;
+  const companyFiles = companyFilesString
+    ? JSON.parse(companyFilesString)
+    : null;
+
+  defaultData.unshift({
+    name: companyInfo.company_name as string,
+    score: companyFiles.creditScore,
+    status: "pending",
+    businessType: "Tourism",
+    actions: null,
+    dateApplied: moment().from(new Date()),
+  });
+
   const table = useReactTable({
     data: defaultData,
     columns,

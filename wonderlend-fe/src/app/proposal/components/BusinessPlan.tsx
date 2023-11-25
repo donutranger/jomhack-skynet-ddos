@@ -21,7 +21,9 @@ const BusinessPlan = () => {
         headers: {
           "Content-Type": "multipart/form-data",
         },
-      });
+      })
+        .then((res) => res.json())
+        .then((res) => res.result);
     },
   });
 
@@ -31,8 +33,7 @@ const BusinessPlan = () => {
         mutateAsync(file).then((res) => {
           setFileIds((prev) => ({
             ...prev,
-            // @ts-expect-error
-            businessOverviewId: res.result?.id,
+            businessOverviewId: res?.id,
             fileIsSubmitted: true,
           }));
         })

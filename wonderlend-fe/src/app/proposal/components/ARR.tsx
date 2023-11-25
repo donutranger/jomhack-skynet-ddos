@@ -21,7 +21,9 @@ const ARR = () => {
         headers: {
           "Content-Type": "multipart/form-data",
         },
-      });
+      })
+        .then((res) => res.json())
+        .then((res) => res.result);
     },
   });
 
@@ -31,8 +33,7 @@ const ARR = () => {
         mutateAsync(file).then((res) => {
           setFileIds((prev) => ({
             ...prev,
-            // @ts-expect-error
-            complianceId: res.result?.id,
+            complianceId: res?.id,
             fileIsSubmitted: true,
           }));
         })
