@@ -17,7 +17,7 @@ const Breadcrumb = () => {
         <div key={`${path}-${index}`} className="flex items-center gap-1">
           <Link
             className={`text-xs ${
-              index === paths.length - 1 ? "text-gray-400" : "text-blue-600"
+              index === paths.length - 1 ? "text-gray-400" : "text-blue-400"
             }`}
             href={
               index !== paths.length - 1
