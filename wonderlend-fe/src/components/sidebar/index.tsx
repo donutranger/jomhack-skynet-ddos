@@ -30,7 +30,7 @@ const Sidebar = () => {
         />
       </Link>
       <Link
-        href="#"
+        href="/proposal"
         className="flex w-10 h-10 rounded-lg justify-center items-center hover:bg-slate-200 cursor-pointer"
       >
         <Image src="/proposal.svg" alt="Proposal icon" width={24} height={24} />

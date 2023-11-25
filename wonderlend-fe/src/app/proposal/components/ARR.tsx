@@ -8,7 +8,7 @@ import Dropzone from "~/components/dropzone";
 import Loader from "~/components/loader";
 
 const ARR = () => {
-  const { files, setFiles, setFileIds } = useFile();
+  const { fileIds, files, setFiles, setFileIds } = useFile();
   const { mutateAsync, status } = useMutation({
     mutationFn: (file: File) => {
       const body = new FormData();
@@ -70,7 +70,7 @@ const ARR = () => {
           />
         </div>
       </div>
-      {files?.compliance?.length && (
+      {fileIds?.complianceId && files?.compliance?.length && (
         <Image
           src="/ARR.svg"
           alt="Annual recurring revenue"

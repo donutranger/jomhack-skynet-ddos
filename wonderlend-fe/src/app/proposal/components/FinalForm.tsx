@@ -47,8 +47,8 @@ const FinalForm = ({ register }: TProps) => {
                 {...register("runway_period_suffix", { required: true })}
                 className="p-1 rounded-md border border-gray-300 w-48"
               >
-                <option value="months">Months</option>
-                <option value="years">Years</option>
+                <option value="Months">Months</option>
+                <option value="Years">Years</option>
               </select>
             </div>
             <input

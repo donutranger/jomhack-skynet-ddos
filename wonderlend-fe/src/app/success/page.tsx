@@ -1,8 +1,8 @@
 "use client";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useMemo } from "react";
 import { Chart as ChartJS, registerables } from "chart.js";
-import { Doughnut, Line } from "react-chartjs-2";
+import { Doughnut } from "react-chartjs-2";
 import Button from "~/components/button";
 import Sidebar from "~/components/sidebar";
 import { useFile } from "../provider";
@@ -17,8 +17,15 @@ const Success = () => {
   const companyFiles = companyFilesString
     ? JSON.parse(companyFilesString)
     : null;
-  const { mutate, data } = useMutation({
-    mutationFn: () => {
+  const { data, error, isLoading } = useQuery({
+    queryKey: [
+      "risk-report",
+      companyFiles?.businessOverviewId,
+      companyFiles?.financialStatementsId,
+      companyFiles?.complianceId,
+      companyFiles?.capitalBreakdownId,
+    ],
+    queryFn: () => {
       return fetch(`${window.api_endpoint}/risk/report`, {
         method: "POST",
         headers: {
@@ -32,22 +39,43 @@ const Success = () => {
         }),
       })
         .then((res) => res.json())
-        .then((data) => data?.result);
+        .then((data) => {
+          if (data?.error) throw new Error(data.error);
+          return data;
+        })
+        .catch((error) => {
+          throw new Error(error);
+        });
     },
   });
 
-  useEffect(() => mutate(), [mutate]);
   useEffect(
     () =>
-      data?.risk_rating?.risk_rating
+      data?.result?.risk_rating?.risk_rating
         ? setFileIds((prev) => ({
             ...prev,
-            creditScore: data.risk_rating.risk_rating,
+            creditScore: data?.result?.risk_rating.risk_rating,
           }))
         : undefined,
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [data?.risk_rating?.risk_rating]
+    [data?.result?.risk_rating?.risk_rating]
   );
+
+  useEffect(() => {
+    if (data?.result) {
+      const companyInfoString =
+        typeof window !== undefined
+          ? localStorage.getItem("organization-info")
+          : null;
+      const companyInfo = companyInfoString
+        ? JSON.parse(companyInfoString)
+        : null;
+      localStorage.setItem(
+        "organization-info",
+        JSON.stringify({ ...companyInfo, ...data.result })
+      );
+    }
+  }, [data?.result]);
 
   const chartData = useMemo(
     () => ({
@@ -59,22 +87,30 @@ const Success = () => {
       datasets: [
         {
           data:
-            data &&
-            // @ts-expect-error
-            Object.values(data ? Object.values(data)[0] : {}).filter(
-              (_, i) => i % 2 === 0
-            ),
+            data?.result &&
+            Object.values(
+              // @ts-expect-error
+              data.result ? Object.values(data.result)[0] : {}
+            ).filter((_, i) => i % 2 === 0),
         },
       ],
     }),
-    [data]
+    [data?.result]
   );
 
-  if (!data)
+  if (isLoading)
     return (
       <div className="h-[95vh] font-bold flex items-center justify-center relative">
         <Sidebar />
         Loading...
+      </div>
+    );
+
+  if (error)
+    return (
+      <div className="h-[95vh] font-bold flex items-center justify-center relative">
+        <Sidebar />
+        Error
       </div>
     );
 
@@ -87,7 +123,7 @@ const Success = () => {
             <p className="font-bold pb-2 text-lg">Risk Rating</p>
             <div className="w-full h-3/4 flex flex-col gap-12 justify-center items-center">
               <p className="text-4xl font-bold">
-                {data.risk_rating?.risk_rating}%
+                {data?.result.risk_rating?.risk_rating}%
               </p>
               <Button text="Re-evaluate" className="w-64" />
             </div>

@@ -8,7 +8,7 @@ import Dropzone from "~/components/dropzone";
 import Loader from "~/components/loader";
 
 const BusinessPlan = () => {
-  const { setFileIds, files, setFiles } = useFile();
+  const { fileIds, setFileIds, files, setFiles } = useFile();
   const { mutateAsync, status } = useMutation({
     mutationFn: (file: File) => {
       const body = new FormData();
@@ -68,7 +68,7 @@ const BusinessPlan = () => {
           />
         </div>
       </div>
-      {files?.businessOverview?.length && (
+      {fileIds?.businessOverviewId && files?.businessOverview?.length && (
         <Image src="/BP.svg" alt="Business plan" width={1000} height={600} />
       )}
     </div>
