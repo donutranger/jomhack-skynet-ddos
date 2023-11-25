@@ -15,13 +15,12 @@ const Footer = (props: TProps) => {
     if (props.currentStep === 0) return fileIds.businessOverviewId === "";
     if (props.currentStep === 1) return fileIds.financialStatementsId === "";
     if (props.currentStep === 2) return fileIds.complianceId === "";
+    if (props.currentStep === 3) return fileIds.capitalBreakdownId === "";
     return false;
   }, [fileIds, props.currentStep]);
 
-  console.log(!!fileIds.businessOverviewId);
-
   return (
-    <div className="fixed bottom-0 flex py-4 gap-96 items-center shadow-black shadow-xl w-full justify-center">
+    <div className="fixed bottom-0 flex py-4 gap-96 items-center shadow-black shadow-xl w-full justify-center bg-white">
       <Button
         text="Back"
         variant="neutral"
@@ -30,7 +29,7 @@ const Footer = (props: TProps) => {
         disabled={props.currentStep === 0}
       />
       <Button
-        text="Next"
+        text={props.currentStep === 4 ? "Submit" : "Next"}
         className="w-48 h-9"
         onClick={props.onNextClick}
         disabled={isNextDisabled}

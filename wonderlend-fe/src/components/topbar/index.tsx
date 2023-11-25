@@ -1,9 +1,9 @@
 import React from "react";
 import Image from "next/image";
 
-const Navbar = () => {
+const Topbar = () => {
   return (
-    <div className="h-14 bg-blue-600 sticky flex items-center px-6">
+    <div className="h-14 bg-blue-600 sticky top-0 flex items-center px-6 z-20">
       <div className="flex gap-4 items-center">
         <Image
           src="/wonderlend.svg"
@@ -17,4 +17,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default Topbar;
