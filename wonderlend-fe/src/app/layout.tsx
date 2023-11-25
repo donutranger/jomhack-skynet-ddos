@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "@next/font/local";
 import "./globals.css";
-import Navbar from "~/components/navbar";
+import Topbar from "~/components/topbar";
 import Providers from "./provider";
 
 const satoshi = localFont({
@@ -18,6 +18,12 @@ const satoshi = localFont({
   variable: "--font-satoshi",
 });
 
+declare global {
+  interface Window {
+    api_endpoint: string;
+  }
+}
+
 export const metadata: Metadata = {
   title: "Wonderlend",
   description: "AI Service to help startups get funds",
@@ -32,7 +38,7 @@ export default function RootLayout({
     <html lang="en" className={`${satoshi.variable} font-sans`}>
       <body>
         <div id="modal-root" />
-        <Navbar />
+        <Topbar />
         <Providers>{children}</Providers>
       </body>
     </html>

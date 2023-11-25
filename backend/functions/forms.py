@@ -54,6 +54,11 @@ def lambda_handler(event, context):
         # Return a successful response with the id of the created record
         return {
             'statusCode': 200,
+            'headers': {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'POST',
+                'Access-Control-Allow-Headers': 'Content-Type'
+            },
             'body': json.dumps({'message': 'Input processed and stored successfully', 'id': context.aws_request_id})
         }
     except ClientError as e:

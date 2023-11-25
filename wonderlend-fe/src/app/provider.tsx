@@ -7,6 +7,7 @@ import {
   SetStateAction,
   createContext,
   useContext,
+  useEffect,
   useState,
 } from "react";
 
@@ -14,6 +15,7 @@ type TFileIds = {
   businessOverviewId: string;
   financialStatementsId: string;
   complianceId: string;
+  capitalBreakdownId: string;
 };
 
 type TFileContext = {
@@ -38,7 +40,14 @@ const Providers: React.FC<PropsWithChildren<unknown>> = ({ children }) => {
     businessOverviewId: "",
     financialStatementsId: "",
     complianceId: "",
+    capitalBreakdownId: "",
   });
+
+  useEffect(() => {
+    window.api_endpoint =
+      "https://he23odlt50.execute-api.ap-southeast-1.amazonaws.com/Prod";
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <FileContext.Provider value={{ fileIds, setFileIds }}>

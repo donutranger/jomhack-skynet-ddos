@@ -21,7 +21,7 @@ const Dropzone = (props: TProps) => {
     <div className="flex flex-col gap-3 pb-3">
       <div {...getRootProps()}>
         <input {...getInputProps()} />
-        <div className="b-1 border-dashed border border-gray-600 p-10 rounded-sm flex flex-col items-center gap-8 bg-gray-100">
+        <div className="b-1 w-96 border-dashed border border-gray-600 p-10 rounded-sm flex flex-col items-center gap-8 bg-gray-100">
           <Image
             src="/upload.svg"
             alt="Upload Logo"
