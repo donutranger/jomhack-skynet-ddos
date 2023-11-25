@@ -9,10 +9,19 @@ const CapitalBreakdown = () => {
     return (
         <div className="max-w-lg px-4 py-2 bg-white rounded-lg border shadow-sm">
             <h3 className="text-md font-semibold text-gray-800 mb-2">Capital Breakdown</h3>
-            <div className="flex h-4 rounded-full overflow-hidden">
+            <div className="flex h-6 overflow-hidden gap-1">
                 {data.map((item, idx) => (
-                    <div key={idx} className={`${item.color} flex-1`} style={{ flex: `0 0 ${item.percentage}%` }}>
-                        <span className="text-xs text-white">{item.name} {item.percentage}%</span>
+                    <div key={idx} className={`${item.color} flex-1 rounded-md`} style={{ flex: `0 0 ${item.percentage}%` }}>
+                    </div>
+                ))}
+            </div>
+            <div className="flex gap-2 text-xs text-gray-600 mt-2">
+                {data.map((item, idx) => (
+                    <div key={idx} >
+                        <span className="flex items-center">
+                            <span className={`h-2 w-2 ${item.color} rounded-full mr-1`}></span>
+                            {item.name}&nbsp;{item.percentage}%
+                        </span>
                     </div>
                 ))}
             </div>
