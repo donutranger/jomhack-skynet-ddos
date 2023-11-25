@@ -249,14 +249,20 @@ def analyze_file(id, type_of_file, content):
 
     parsed_result = parse_result(result)
 
+    if parsed_result is None:
+        print("Failed to parse GPT result")
+        return
+
     save_fail_to_s3(type_of_file+"_"+id+".json", json.dumps(parsed_result))
 
     return
 
 def parse_result(result):
-    #TODO: parse result to extract json, for now just return it as is
+    match = re.search(r'```json([^`]+)```', content, re.MULTILINE | re.DOTALL)
 
-    return result
+    json_code_block = match.group(1).strip() if match else None
+
+    return json_code_block
 
 def get_file_content_from_s3(file_name):
     s3 = boto3.client('s3')
