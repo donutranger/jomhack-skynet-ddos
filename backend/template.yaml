@@ -113,7 +113,7 @@ Resources:
           Properties:
             Path: /upload/compliance
             Method: post
-   UploadCapital:
+  UploadCapital:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: risk_engine/
