@@ -72,6 +72,9 @@ def process_file(type_of_file, event):
         if is_file_exists(file_name):
             return {
                 'statusCode': 200,
+                'headers': {
+                    'Access-Control-Allow-Origin': '*',
+                },
                 'body': json.dumps({
                     'result': {
                         'id': checksum,
@@ -84,6 +87,9 @@ def process_file(type_of_file, event):
 
         return {
             'statusCode': 200,
+            'headers': {
+                'Access-Control-Allow-Origin': '*',
+            },
             'body': json.dumps({
                 'result': {
                     'id': checksum,
@@ -95,6 +101,9 @@ def process_file(type_of_file, event):
     except Exception as e:
         return {
             'statusCode': 500,
+            'headers': {
+                'Access-Control-Allow-Origin': '*',
+            },
             'body': json.dumps({
                 'error': {
                     'message': 'Error in uploading file: ' + str(e),
@@ -104,6 +113,9 @@ def process_file(type_of_file, event):
 
         return {
             'statusCode': 500,
+            'headers': {
+                'Access-Control-Allow-Origin': '*',
+            },
             'body': json.dumps({
                 'error': {
                     'message': 'Error in processing file: ' + str(e),
@@ -141,6 +153,9 @@ def risk_report(event, context):
 
         return {
             'statusCode': 200,
+            'headers': {
+                'Access-Control-Allow-Origin': '*',
+            },
             'body': json.dumps({
                 'result': {
                     'business_overview': json.loads(business_overview_result),
@@ -152,6 +167,9 @@ def risk_report(event, context):
     except Exception as e:
         return {
             'statusCode': 500,
+            'headers': {
+                'Access-Control-Allow-Origin': '*',
+            },
             'body': json.dumps({
                 'error': {
                     'message': 'Error in processing file: ' + str(e),
