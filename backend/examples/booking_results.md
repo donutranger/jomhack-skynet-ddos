@@ -122,7 +122,7 @@ The content of the 10-K Part 4 report provided is partially visible due to limit
   "market_risk_rating": 50,
   "market_risk_rating_reason": "The report includes mention of utilizing fair value specialists to evaluate discount rates and assessing the impact of market conditions on forecasts. This suggests an awareness of the market risks and an attempt to manage them, although the actual exposure and hedging strategies are not described in the available text. To accurately determine the risk rating, further details on financial instruments, sensitivity analyses, and management discussions on market risk would be necessary",
   "revenue_growth_rating": 80,
-  "revenue_growth_rating": "The financial summaries show an increase in total revenues from $14,527 million in 2018 to $15,066 million in 2019, which is a positive sign of growth. Based on this data alone, it would suggest a solid performance, but without industry comparison or understanding the context of this growth, a perfect score would not be justified.",
+  "revenue_growth_rating_reason": "The financial summaries show an increase in total revenues from $14,527 million in 2018 to $15,066 million in 2019, which is a positive sign of growth. Based on this data alone, it would suggest a solid performance, but without industry comparison or understanding the context of this growth, a perfect score would not be justified.",
   "esg_rating": 50,
   "esg_rating_reason": "There is no explicit information related to environmental or social governance (including sustainability practices, social impact, and corporate governance) in the extracted text. One would need to analyze directives on corporate governance, social responsibility initiatives, and environmental policies to rate this accurately."
 }

@@ -217,7 +217,14 @@ def parse_result(result):
 
     return result
 
+def get_file_content_from_s3(file_name):
+    s3 = boto3.client('s3')
+    bucket_name = os.environ['BUCKET_NAME']
+    response = s3.get_object(Bucket=bucket_name, Key=file_name)
+    content = response['Body'].read().decode('utf-8')
 
+    return content
+    
 def save_fail_to_s3(file_name, content):
     s3 = boto3.client('s3')
     bucket_name = os.environ['BUCKET_NAME']
