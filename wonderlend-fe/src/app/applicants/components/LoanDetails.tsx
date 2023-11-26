@@ -3,7 +3,7 @@ import { usePathname } from "next/navigation";
 const LoanDetails = () => {
   const pathname = usePathname();
   const currCompanyName = pathname
-    .split("/")[3]
+    ?.split("/")[3]
     .split("[A-Z]*")
     .map((word) => word[0].toLocaleUpperCase() + word.slice(1))
     .join(" ");
@@ -16,8 +16,8 @@ const LoanDetails = () => {
     : null;
   const companyInfo =
     tempCompanyData &&
-    currCompanyName.toLocaleLowerCase() ===
-      tempCompanyData.company_name.toLocaleLowerCase()
+    currCompanyName?.toLocaleLowerCase() ===
+      tempCompanyData?.company_name?.toLocaleLowerCase()
       ? tempCompanyData
       : null;
   const MYRFormat = new Intl.NumberFormat("en-US", {

@@ -3,7 +3,7 @@ import { usePathname } from "next/navigation";
 const InfoBreakdown = () => {
   const pathname = usePathname();
   const currCompanyName = pathname
-    .split("/")[3]
+    ?.split("/")[3]
     .split("[A-Z]*")
     .map((word) => word[0].toLocaleUpperCase() + word.slice(1))
     .join(" ");
@@ -17,8 +17,8 @@ const InfoBreakdown = () => {
     : null;
   const companyInfo =
     tempCompanyData &&
-    currCompanyName.toLocaleLowerCase() ===
-      tempCompanyData.company_name.toLocaleLowerCase()
+    currCompanyName?.toLocaleLowerCase() ===
+      tempCompanyData?.company_name?.toLocaleLowerCase()
       ? tempCompanyData
       : null;
 

@@ -6,7 +6,7 @@ import Link from "next/link";
 
 const Breadcrumb = () => {
   const pathname = usePathname();
-  const paths = pathname.split("/").filter((path) => path !== "");
+  const paths = pathname?.split("/").filter((path) => path !== "");
   return (
     <div className="flex items-center gap-1">
       <Link href="/dashboard" className="text-xs text-blue-400">

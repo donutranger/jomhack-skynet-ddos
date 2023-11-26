@@ -80,10 +80,11 @@ const Table = () => {
     !!companyFiles &&
     Object.keys(companyInfo).length &&
     Object.keys(companyFiles).length &&
-    !defaultData.find((data) => data.name === companyInfo?.company_name)
+    !defaultData.find((data) => data.name === companyInfo?.company_name) &&
+    companyInfo?.company_name
   )
     defaultData.unshift({
-      key: companyInfo?.company_name.split(" ").join("-").toLowerCase(),
+      key: companyInfo?.company_name?.split(" ")?.join("-")?.toLowerCase(),
       name: companyInfo?.company_name as string,
       score: companyFiles?.creditScore,
       status: "pending",

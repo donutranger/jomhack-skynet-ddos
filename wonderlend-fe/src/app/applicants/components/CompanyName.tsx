@@ -6,7 +6,7 @@ import { defaultData } from "~/app/constants";
 const CompanyName = () => {
   const pathname = usePathname();
   const company = defaultData.find(
-    (data) => data.key === pathname.split("/")[3]
+    (data) => data.key === pathname?.split("/")[3]
   );
   return (
     <div className="flex justify-between items-center p-4 bg-gray-100 rounded-md border border-gray-300">

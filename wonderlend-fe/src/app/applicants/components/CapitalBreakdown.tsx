@@ -36,7 +36,7 @@ const CapitalBreakdown = () => {
   }, [data?.cap_breakdown]);
 
   const capBreakdownData = useMemo(() => {
-    if (currCompanyName === data?.company_name.toLowerCase())
+    if (currCompanyName === data?.company_name?.toLowerCase())
       return currData ?? defaultData;
     return defaultData;
   }, []);
